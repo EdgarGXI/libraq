@@ -7,11 +7,11 @@ export default function ProfileEdit(props) {
   const { editable, fetch } = props;
   var editableBool, data;
   if (editable=='all') { //editable all permite que se editen todos
-    editableBool = [1,1];
+    editableBool = [true,true];
   } else if (editable=='none') {  //editable none NO permite que se edite ninguno
-    editableBool = [0,0];
+    editableBool = [false,false];
   } else {  //editable else permite que se editen todos menos email y contraseña
-    editableBool = [1,0];
+    editableBool = [true,false];
   }
   
   data = {
@@ -29,7 +29,7 @@ export default function ProfileEdit(props) {
   
   return (
     <>
-      <View style={{borderRadius: '100%', aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
+      <View style={{borderRadius: 100, aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
         <Image
           resizeMode="stretch"
           source={require('../assets/images/avatar.png')}
@@ -65,7 +65,7 @@ export default function ProfileEdit(props) {
         
         <SimpleInput 
           placeholder="Contraseña" 
-          secureTextEntry="True"
+          secureTextEntry={true}
           editable={editableBool[1]}
           defaultValue={data["password"]}
           styleInput={{width: '100%'}} 

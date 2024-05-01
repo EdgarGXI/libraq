@@ -1,7 +1,7 @@
 import { TextInput, StyleSheet, View } from "react-native";
 import normalize from './FontNormalize';
 
-export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, editable=1, secureTextEntry, inputMode, multiline, numberOfLines, defaultValue, styleDiv, styleInput}) {
+export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, editable=true, secureTextEntry=true, inputMode, multiline, numberOfLines, defaultValue, styleDiv, styleInput}) {
   if (simple) {
     addiStyle = {};
   } else {

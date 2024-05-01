@@ -35,6 +35,7 @@ export default function Home() {
               </Svg>
             }
             styleDiv={{marginBottom: 20}}
+            secureTextEntry={false}
           /> 
 
           <TitleText style={{paddingBottom: 10}}>Estadísticas</TitleText>

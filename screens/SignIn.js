@@ -1,11 +1,30 @@
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import Svg, { G, Path } from 'react-native-svg';
 
 import SimpleInput from '../components/SimpleInput';
 import { WhiteButton, PurpleButton } from '../components/Buttons';
 import { TitleText, NormalText } from '../components/FontSizing';
 
+
+
 export default function SignIn() {
+
+  const navigation = useNavigation();
+  
+
+  //Este handle va a cambiar cuando toque hacer las verificaciones y eso, de ultimo se manda al home.
+  const handleHome = () => {
+    ///////////////
+    //////////////
+    navigation.navigate('Home');
+  };
+  const handleSignUp = () => {
+    ///////////////
+    //////////////
+    navigation.navigate('SignUp');
+  };
+
   return (
     <View style={styles.view0}>
       <Image
@@ -40,17 +59,19 @@ export default function SignIn() {
                   <Path d="M10 11.1765C9 11.1765 8.23529 11.9412 8.23529 12.9412C8.23529 13.7059 8.70588 14.3529 9.41176 14.5882V15.8823C9.41176 16.2353 9.64706 16.4706 10 16.4706C10.3529 16.4706 10.5882 16.2353 10.5882 15.8823V14.5882C11.2941 14.3529 11.7647 13.7059 11.7647 12.9412C11.7647 11.9412 11 11.1765 10 11.1765ZM10 13.5294C9.64706 13.5294 9.41176 13.2941 9.41176 12.9412C9.41176 12.5882 9.64706 12.3529 10 12.3529C10.3529 12.3529 10.5882 12.5882 10.5882 12.9412C10.5882 13.2941 10.3529 13.5294 10 13.5294Z" fill="#8A19D6"/>
                 </Svg>
               } 
-              secureTextEntry="True"
+              //secureTextEntry="True" esta linea me explota en android pero de igual tapa la password
             />
 
             <TouchableOpacity>
               <NormalText style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end'}}>¿Olvidaste tu contraseña?</NormalText>
             </TouchableOpacity>
 
-            <PurpleButton title="Iniciar sesión" fontSize={14} />
+            <PurpleButton title="Iniciar sesión" fontSize={14} onPress={handleHome} />
 
-            <TouchableOpacity>
-              <NormalText style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end'}}>¿No tienes una cuenta? Regístrate.</NormalText>
+            <TouchableOpacity onPress={handleSignUp}>
+              <NormalText style={{ color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end' }}>
+                ¿No tienes una cuenta? Regístrate.
+              </NormalText>
             </TouchableOpacity>
 
           </View>

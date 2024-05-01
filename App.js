@@ -1,4 +1,6 @@
 import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // or any files within the Snack
 import StartScreen from './screens/StartScreen';
@@ -10,11 +12,21 @@ import CreateBookSale from './screens/CreateBookSale';
 import Profile from './screens/Profile';
 import Home from './screens/Home';
 
+
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Home />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="StartScreen" component={StartScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

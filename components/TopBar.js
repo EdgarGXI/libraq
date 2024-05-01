@@ -1,8 +1,12 @@
 import {
   View,
   Image,
+  Text,
+  TouchableHighlight,
+  Pressable
 } from "react-native";
 import Svg, { G, Path, Circle } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 import { WhiteButton } from '../components/Buttons';
 import { TitleText } from './FontSizing';
@@ -59,16 +63,26 @@ function NotificationsButton(props) {
 
 export default function TopBar(props) {
   const { user, notif } = props;
+  const navigation = useNavigation();
+  
+
+  const handleProfile = () => {
+    ///////////////
+    //////////////
+    navigation.navigate('Profile');
+  };
   return(
     <View style={{flexDirection: 'row', height: '12%', paddingVertical: 10, paddingHorizontal: 25, alignItems: 'center'}}>
       <View style={{flexDirection: 'row', alignItems: 'center', width: '80%', gap: 10}}>
-        <View style={{height: '80%', aspectRatio: 1}}>
-          <Image
-            resizeMode="contain"
-            source={require('../assets/images/avatar.png')}
-            style={{flex: 1, width: null, height: null, aspectRatio: 1}}
-          ></Image>
-        </View>
+        <Pressable onPress={handleProfile} >
+          <View style={{height: '80%', aspectRatio: 1}}>
+              <Image
+                resizeMode="contain"
+                source={require('../assets/images/avatar.png')} 
+                style={{flex: 1, width: null, height: null, aspectRatio: 1}} 
+              ></Image>
+          </View>
+        </Pressable>
         <TitleText>{user}</TitleText>
       </View>
       <View style={{alignItems: 'flex-end', width: '20%'}}>
