@@ -4,7 +4,7 @@ export default function Chip({content}) {
   return (
     <NormalText 
       style={{
-        borderRadius: 20, 
+        borderRadius: 14, 
         backgroundColor: '#fff', 
         borderColor: '#ccc', 
         borderWidth: 1, 
