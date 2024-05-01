@@ -5,12 +5,11 @@ import TopBar from '../components/TopBar';
 import { NormalText, TitleText } from '../components/FontSizing';
 import Chip from '../components/Chip';
 
-
-// se haría un ciclo para añadir los chips de estado/género 
-
-export default function BookSaleDetails(props) {
-  const { seller, title, author, editorial, year, cover, genres, marked, damaged, price, description, id } = props;
+export default function BookSaleDetails({ route, navigation }) {
+  /* 2. Get the param */
+  const { seller, title, author, editorial, year, cover, genres, marked, damaged, price, description, id, statusShow, statusPurchase, date } = route.params;
   //status: String
+  console.log(navigation);
   //buyer: Account
   var status = [];
   if (marked) {
@@ -32,6 +31,7 @@ export default function BookSaleDetails(props) {
     genresChip.push(<Chip content="Indefinido" />);
   }
 
+  
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{width: '100%', flex: 1}}>
@@ -39,9 +39,11 @@ export default function BookSaleDetails(props) {
         <TopBar user="TomCherry" />
         
         <ScrollView>
-          <View style={{alignItems: 'center'}}>
-            <TitleText>{title}</TitleText>
-            <NormalText style={{color: '#CB0C9F'}}>{author}</NormalText>
+          <NormalText style={{color: '#fff', backgroundColor: '#cb0c9f', padding: 8, width: '100%', textAlign: 'center', fontWeight: 700}}>{statusPurchase}</NormalText>
+          <NormalText style={{color: '#fff', backgroundColor: '#8A19D6', padding: 8, width: '100%', display: statusShow!=statusPurchase ? 'block' : 'none', textAlign: 'center', fontWeight: 700}}>{statusShow}</NormalText>
+          <View style={{alignItems: 'center', alignSelf: 'center', width: '80%', paddingTop: 10}}>
+            <TitleText style={{textAlign: 'center'}}>{title}</TitleText>
+            <NormalText style={{color: '#CB0C9F', textAlign: 'center', paddingVertical: 6, fontWeight: 700}}>{author}</NormalText>
             <View style={{width: 210, backgroundColor: '#ccc', marginVertical: 20, height: 300}}>
               <Image 
                 resizeMode="stretch"
@@ -50,8 +52,8 @@ export default function BookSaleDetails(props) {
               />
             </View>
             <TitleText>${price}</TitleText>
-            <View style={{flexDirection: 'row', width:'80%', justifyContent: 'space-between', paddingVertical: 20}}>
-              <View style={{flexShrink: 1}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, paddingBottom: 20, width: '100%'}}>
+              <View style={{flexShrink: 1, paddingLeft: 7}}>
                 <NormalText style={{color: '#9E9E9E'}}>{editorial}, {year}</NormalText>
                 <NormalText style={{color: '#9E9E9E'}}>Tapa {cover}</NormalText>
               </View>
@@ -59,25 +61,24 @@ export default function BookSaleDetails(props) {
                 <NormalText style={{color: '#9E9E9E'}}>Vendedor</NormalText>
                 <NormalText style={{color: '#8A19D6', textAlign: 'center'}}>{seller}</NormalText>
               </View>
-
             </View>
             
-            <NormalText style={{width: '80%', color:'#9E9E9E'}}>Descripción</NormalText>
-            <NormalText style={{width: '80%'}}>
+            <NormalText style={{width: '100%', color:'#9E9E9E'}}>Descripción</NormalText>
+            <NormalText style={{width: '100%'}}>
               {description}
             </NormalText>
 
-            <NormalText style={{width: '80%', color:'#9E9E9E', paddingTop: 20}}>Estado</NormalText>
-            <View style={{flexDirection: 'row', gap: 5, width: '80%'}}>
+            <NormalText style={{width: '100%', color:'#9E9E9E', paddingTop: 20}}>Estado</NormalText>
+            <View style={{flexDirection: 'row', gap: 5, width: '100%'}}>
               {status}
             </View>
             
-            <NormalText style={{width: '80%', color:'#9E9E9E', paddingTop: 20}}>Género</NormalText>
-            <View style={{flexDirection: 'row', gap: 5, width: '80%', paddingBottom: 20}}>
+            <NormalText style={{width: '100%', color:'#9E9E9E', paddingTop: 20}}>Género</NormalText>
+            <View style={{flexDirection: 'row', gap: 5, width: '100%', paddingBottom: 20}}>
               {genresChip}
             </View>
 
-            <View style={{marginBottom: 40, marginTop: 10, flexDirection: 'row',  width:'80%', justifyContent: 'space-around'}}>
+            <View style={{marginBottom: 40, marginTop: 30, flexDirection: 'row',  width:'100%', justifyContent: 'space-around'}}>
               <WhiteButton title="Volver" style={{paddingHorizontal: 40}} />
               <PurpleButton title="Pedir" style={{paddingHorizontal: 40}} />
             </View>
