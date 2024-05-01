@@ -10,29 +10,29 @@ export default function BookSaleDetails({ route, navigation }) {
   const { seller, title, author, editorial, year, cover, genres, marked, damaged, price, description, id, statusShow, statusPurchase, date } = route.params;
   var status = [];
   if (marked) {
-    status.push(<Chip content="Rayado" />);
+    status.push(<Chip key="marked" content="Rayado" />); //Cada Chip tiene que tener un key para que se diferencien
   }
   if (damaged) {
-    status.push(<Chip content="Dañado" />);
+    status.push(<Chip key="damaged" content="Dañado" />);
   }
-  if (status.length==0) {
-    status.push(<Chip content="Intacto" />);
+  if (status.length === 0) {
+    status.push(<Chip key="intact" content="Intacto" />);
   }
-
+  
   var genresChip = [];
   if (genres != null) {
     for (let i = 0; i < genres.length; i++) {
-      genresChip.push(<Chip content={genres[i]} />);
+      genresChip.push(<Chip key={i} content={genres[i]} />);
     }
   } else {
-    genresChip.push(<Chip content="Indefinido" />);
+    genresChip.push(<Chip key="indefinite" content="Indefinido" />);
   }
+  
 
   
   return (
     <View style={styles.view0}>
-      <SafeAreaView style={{width: '100%', flex: 1}}
-
+      <SafeAreaView style={{width: '100%', flex: 1}}>
         <ScrollView>
           <NormalText style={{color: '#fff', backgroundColor: '#cb0c9f', padding: 8, width: '100%', textAlign: 'center', fontWeight: 700}}>{statusPurchase}</NormalText>
           <NormalText style={{color: '#fff', backgroundColor: '#8A19D6', padding: 8, width: '100%', display: statusShow!=statusPurchase ? 'block' : 'none', textAlign: 'center', fontWeight: 700}}>{statusShow}</NormalText>
@@ -81,6 +81,7 @@ export default function BookSaleDetails({ route, navigation }) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   view0: {
