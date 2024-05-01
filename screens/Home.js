@@ -11,6 +11,7 @@ import TopBar from '../components/TopBar';
 import { TitleText } from '../components/FontSizing';
 import Stat from '../components/Stat';
 import SimpleInput from '../components/SimpleInput';
+import BottomNavBar from '../components/BottomNavBar';
 
 // estadísticas solo aparecen si ventas del usuario > 0? o que aparezcan igualmente? idk
 //añadir filtros?
@@ -108,7 +109,8 @@ export default function Home() {
             />
           </View>
         </ScrollView>
-        
+
+        <BottomNavBar homeActive={true} />
         
       </SafeAreaView>
     </View>
