@@ -1,24 +1,26 @@
 import { TextInput, StyleSheet, View } from "react-native";
 import normalize from './FontNormalize';
 
-export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, style={maxWidth: '90%'}, secureTextEntry, inputMode, multiline, numberOfLines}) {
+export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, editable=1, secureTextEntry, inputMode, multiline, numberOfLines, styleDiv, value}) {
   if (simple) {
     addiStyle = {};
   } else {
     addiStyle = {borderColor: '#ccc', borderWidth: 2, backgroundColor: 'white'};
   }
   return (
-    <View style={[styles.button, addiStyle]}>
+    <View style={[styles.button, addiStyle, styleDiv]}>
       {icon}
       <TextInput 
-        style={[{marginLeft: 10, fontSize: normalize(fontSize)}, style]}  
+        style={{fontSize: normalize(fontSize) }}
         placeholder={placeholder} 
         placeholderTextColor="#ccc"
-        secureTextEntry={true}
+        secureTextEntry={secureTextEntry}
         inputMode={inputMode}
         maxLength={maxLength}
         multiline={multiline}
         numberOfLines={numberOfLines}
+        value={value}
+        editable={editable}
       />
   </View>
   );
@@ -32,5 +34,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 16,
     borderRadius: 16,
+    gap: 10,
   },
 })
