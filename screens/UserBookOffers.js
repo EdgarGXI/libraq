@@ -5,9 +5,9 @@ import {
   SafeAreaView
 } from "react-native";
 
-import { PurpleButton } from '../components/Buttons';
 import BookSale from '../components/BookSale';
 import TopBar from '../components/TopBar';
+import BottomNavBar from '../components/BottomNavBar';
 
 export default function UserBookOffers() {
   return (
@@ -42,7 +42,8 @@ export default function UserBookOffers() {
             />
           </View>
         </ScrollView>
-        
+
+        <BottomNavBar pedidosActive={true} />
       </SafeAreaView>
     </View>
   );
