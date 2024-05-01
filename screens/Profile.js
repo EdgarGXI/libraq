@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
-    aspectRatio: 1,
     width: '100%',
-    maxHeight: '60%',
+    height: 500,
+    aspectRatio: 1
   },
 });
 
