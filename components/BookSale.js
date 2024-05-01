@@ -10,11 +10,13 @@ export default function BookSale(props) {
   const {title, author, editorial, year, cover, price, status, id, date} = props;
   return(
     <Pressable style={{flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-between'}}>
-      <Image 
-        style={{width: '35%', aspectRatio: '0.7'}}
-        resizeMode="stretch"
-        source={require('../assets/images/coverdefault.png')}
-      />
+      <View style={{width: '35%', aspectRatio: 0.7}}>
+        <Image 
+          style={{width: null, height: null, flex: 1}}
+          resizeMode="stretch"
+          source={require('../assets/images/coverdefault.png')}
+        />
+      </View>
       <View style={{width: '60%'}}>
         <MiniText style={{color: '#9e9e9e'}}>{date}</MiniText>
         <NormalText style={{fontWeight: 700}}>{title}</NormalText>
