@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 
-import { PurpleButton, WhiteButton } from '../components/Buttons';
+import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import TopBar from '../components/TopBar';
 import { NormalText } from '../components/FontSizing';
@@ -41,13 +41,14 @@ export default function UserBookSales() {
         
         <ScrollView>
           <View style={{alignItems: 'center'}}>
-            <SimpleInput placeholder="Nombre del libro" fontSize={18} simple={1} style={{maxWidth: '80%'}}/>
-            <SimpleInput placeholder="Autor" simple={1} style={{maxWidth: '80%'}} />
+            <SimpleInput placeholder="Nombre del libro" fontSize={18} simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
+            <SimpleInput placeholder="Autor" simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
             <View style={{flexDirection: 'row', width:'80%', justifyContent: 'space-between'}}>
-              <SimpleInput placeholder="Editorial" simple={1} style={{width: '60%'}} />
-              <SimpleInput placeholder="Año" simple={1} inputMode="numeric" maxLength={4} style={{textAlign: 'right', width: '40%'}}/>
+              <SimpleInput placeholder="Editorial" simple={1} styleDiv={{width: '50%', justifyContent: 'center'}} />
+              <SimpleInput placeholder="Año" simple={1} inputMode="numeric" maxLength={4} styleDiv={{width: '50%', justifyContent: 'center'}}/>
             </View>
-            <SimpleInput placeholder="Precio" simple={1} inputMode="decimal" icon={<NormalText>$</NormalText>} style={{maxWidth: '80%', alignItems: 'center'}} />
+            <SimpleInput placeholder="Precio" simple={1} inputMode="decimal" icon={<NormalText>$</NormalText>} styleDiv={{width: '80%', justifyContent: 'center'}} />
+            <SimpleInput placeholder="Tipo de tapa (Blanda/Dura)" simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
 
             <View style={{width: 210, backgroundColor: '#ccc', marginVertical: 20, height: 300}}>
               <Image 
@@ -58,7 +59,7 @@ export default function UserBookSales() {
             </View>
             <PurpleButton title="Subir imagen" onPress={pickImage} />
 
-            <SimpleInput placeholder="Descripción" simple={1} style={{width: '80%'}} multiline={true} numberOfLines={5} />
+            <SimpleInput placeholder="Descripción" simple={1} styleDiv={{width: '80%'}} multiline={true} numberOfLines={5} />
 
             <View style={{width: '80%', backgroundColor: 'white'}}>
               <SectionedMultiSelect
