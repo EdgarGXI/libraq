@@ -8,6 +8,7 @@ import {
 import { PurpleButton } from '../components/Buttons';
 import BookSale from '../components/BookSale';
 import TopBar from '../components/TopBar';
+import BottomNavBar from '../components/BottomNavBar';
 
 export default function UserBookSales() {
   return (
@@ -32,7 +33,8 @@ export default function UserBookSales() {
             <PurpleButton title="Agregar" style={{marginBottom: 40}}/>
           </View>
         </ScrollView>
-        
+
+        <BottomNavBar ventasActive={true} />
         
       </SafeAreaView>
     </View>
