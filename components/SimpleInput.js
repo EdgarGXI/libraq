@@ -1,7 +1,7 @@
 import { TextInput, StyleSheet, View } from "react-native";
 import normalize from './FontNormalize';
 
-export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, editable=1, secureTextEntry, inputMode, multiline, numberOfLines, defaultValue, styleDiv}) {
+export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, simple=0, editable=1, secureTextEntry, inputMode, multiline, numberOfLines, defaultValue, styleDiv, styleInput}) {
   if (simple) {
     addiStyle = {};
   } else {
@@ -11,7 +11,7 @@ export default function SimpleInput({placeholder, maxLength, icon, fontSize=14, 
     <View style={[styles.button, addiStyle, styleDiv]}>
       {icon}
       <TextInput 
-        style={{fontSize: normalize(fontSize), width: '100%'}}
+        style={[{fontSize: normalize(fontSize)}, styleInput]}
         placeholder={placeholder} 
         placeholderTextColor="#ccc"
         secureTextEntry={secureTextEntry}
