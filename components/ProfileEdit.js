@@ -68,6 +68,7 @@ export default function ProfileEdit(props) {
           secureTextEntry="True"
           editable={editableBool[1]}
           defaultValue={data["password"]}
+          styleInput={{width: '100%'}} 
         />
 
         <TouchableOpacity>
