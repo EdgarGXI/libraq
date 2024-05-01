@@ -1,7 +1,6 @@
 import {
   View,
   Image,
-  Text,
 } from "react-native";
 import Svg, { G, Path, Circle } from 'react-native-svg';
 
