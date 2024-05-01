@@ -11,8 +11,10 @@ import UserBookOffers from './screens/UserBookOffers';
 import CreateBookSale from './screens/CreateBookSale';
 import Profile from './screens/Profile';
 import Home from './screens/Home';
-
-
+import BookSaleDetails from './screens/BookSaleDetails';
+import UserBookSales from './screens/UserBookSales';
+import UserBookOffers from './screens/UserBookOffers';
+import CreateBookSale from './screens/CreateBookSale';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,10 +23,11 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="StartScreen" component={StartScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Perfil" component={Profile} />
+        <Stack.Screen name="Detalles de venta" component={BookSaleDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
