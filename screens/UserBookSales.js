@@ -16,47 +16,18 @@ export default function UserBookSales() {
 
         <TopBar user="TomCherry" />
         
-        <ScrollView>
-          <View style={{alignItems: 'center', gap: 30, width: '100%'}}>
-            <BookSale
-                id=""
-                title="La Cadena de Hierro"
-                author="Cassandra Clare"
-                editorial="Destino"
-                year="2024"
-                cover="Blanda"
-                state="Usado"
-                status="VENTA ACTIVA"
-            />
-            <BookSale
-                id=""
-                title="La Cadena de Hierro"
-                author="Cassandra Clare"
-                editorial="Destino"
-                year="2024"
-                cover="Blanda"
-                state="Usado"
-                status="VENTA ACTIVA"
-            />
-            <BookSale
-                id=""
-                title="La Cadena de Hierro"
-                author="Cassandra Clare"
-                editorial="Destino"
-                year="2024"
-                cover="Blanda"
-                state="Usado"
-                status="VENTA ACTIVA"
-            />
-            <BookSale
-                id=""
-                title="La Cadena de Hierro"
-                author="Cassandra Clare"
-                editorial="Destino"
-                year="2024"
-                cover="Blanda"
-                state="Usado"
-                status="VENTA ACTIVA"
+        <ScrollView style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center', gap: 30, width: '90%'}}>
+            <BookSale 
+              id="" 
+              title="La Cadena de Hierro" 
+              author="Cassandra Clare" 
+              editorial="Destino" 
+              year="2024" 
+              cover="Blanda" 
+              price={20000} 
+              status="VENTA ACTIVA" 
+              date="24/12/2025"
             />
             <PurpleButton title="Agregar" style={{marginBottom: 40}}/>
           </View>
