@@ -6,11 +6,8 @@ import { NormalText, TitleText } from '../components/FontSizing';
 import Chip from '../components/Chip';
 
 export default function BookSaleDetails({ route, navigation }) {
-  /* 2. Get the param */
+
   const { seller, title, author, editorial, year, cover, genres, marked, damaged, price, description, id, statusShow, statusPurchase, date } = route.params;
-  //status: String
-  console.log(navigation);
-  //buyer: Account
   var status = [];
   if (marked) {
     status.push(<Chip content="Rayado" />);
@@ -73,15 +70,13 @@ export default function BookSaleDetails({ route, navigation }) {
               {status}
             </View>
             
-            <NormalText style={{width: '100%', color:'#9E9E9E', paddingTop: 20}}>Género</NormalText>
-            <View style={{flexDirection: 'row', gap: 5, width: '100%', paddingBottom: 20}}>
+            <NormalText style={{width: '100%', color:'#9E9E9E', paddingVertical: 20}}>Género</NormalText>
+            <View style={{flexDirection: 'row', gap: 5, width: '100%'}}>
               {genresChip}
             </View>
 
-            <View style={{marginBottom: 40, marginTop: 30, flexDirection: 'row',  width:'100%', justifyContent: 'space-around'}}>
-              <WhiteButton title="Volver" style={{paddingHorizontal: 40}} />
-              <PurpleButton title="Pedir" style={{paddingHorizontal: 40}} />
-            </View>
+            <PurpleButton title="Pedir" style={{marginBottom: 40, marginTop: 25, paddingHorizontal: 60}} />
+            
           </View>
         </ScrollView>
       </SafeAreaView>
