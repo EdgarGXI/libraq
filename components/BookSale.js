@@ -16,7 +16,7 @@ export default function BookSale(props) {
   //Este handle va a cambiar cuando toque hacer las verificaciones y eso, de ultimo se manda al home.
   const viewDetails = () => {
     navigation.navigate(
-      'BookSaleDetails', 
+      'Detalles de venta', 
       {seller: "TomCherry", //fetch
       title: title, 
       author: author, 
