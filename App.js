@@ -28,6 +28,8 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Perfil" component={Profile} />
         <Stack.Screen name="Detalles de venta" component={BookSaleDetails} />
+        <Stack.Screen name="Ventas" component={UserBookSales} options={{ headerShown: false }} />
+        <Stack.Screen name="Pedidos" component={UserBookOffers} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
