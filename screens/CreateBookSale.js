@@ -5,18 +5,18 @@ import * as ImagePicker from 'expo-image-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 
-import { PurpleButton } from '../components/Buttons';
+import { PurpleButton, WhiteButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import TopBar from '../components/TopBar';
 import { NormalText } from '../components/FontSizing';
 
 
-export default function CreateBookSales() {
+export default function UserBookSales() {
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      //allowsEditing: true,
+      //allowsEditing: true, ios mata esto
       aspect: [6, 10],
     });
 
@@ -70,7 +70,7 @@ export default function CreateBookSales() {
 
             <SimpleInput placeholder="Descripción" simple={1} styleDiv={{width: '80%'}} multiline={true} numberOfLines={5} />
 
-            <View style={{width: '80%', backgroundColor: 'white', gap: 10, paddingVertical: 10}}>
+            <View style={{width: '80%', backgroundColor: '#F9FBFF', gap: 10, paddingVertical: 10}}>
               <SectionedMultiSelect
                 selectText="¿Libro usado?"
                 searchPlaceholderText="Escoja lo que aplique..."
@@ -108,7 +108,10 @@ export default function CreateBookSales() {
               />
             </View>
 
-            <PurpleButton title="Publicar" style={{marginBottom: 40, marginTop: 10}} />
+            <View style={{marginBottom: 40, marginTop: 10, flexDirection: 'row',  width:'80%', justifyContent: 'space-around'}}>
+              <WhiteButton title="Cancelar" style={{paddingHorizontal: 20}} />
+              <PurpleButton title="Publicar" style={{paddingHorizontal: 20}} />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
