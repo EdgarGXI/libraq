@@ -11,7 +11,7 @@ import TopBar from '../components/TopBar';
 import { NormalText } from '../components/FontSizing';
 
 
-export default function UserBookSales() {
+export default function CreateBookSales() {
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,6 +31,15 @@ export default function UserBookSales() {
   const items = [
     {name: "Rayado", id: 1},
     {name: "Dañado", id: 2},
+  ]
+
+  const [selectedItemsGenre, setSelectedItemsGenre] = useState([]);
+  const itemsGenre = [
+    {name: "Lista", id: 1},
+    {name: "por", id: 2},
+    {name: "definir", id: 3},
+    {name: "pq", id: 4},
+    {name: "flojera", id: 5},
   ]
 
   return (
@@ -61,7 +70,7 @@ export default function UserBookSales() {
 
             <SimpleInput placeholder="Descripción" simple={1} styleDiv={{width: '80%'}} multiline={true} numberOfLines={5} />
 
-            <View style={{width: '80%', backgroundColor: 'white'}}>
+            <View style={{width: '80%', backgroundColor: 'white', gap: 10, paddingVertical: 10}}>
               <SectionedMultiSelect
                 selectText="¿Libro usado?"
                 searchPlaceholderText="Escoja lo que aplique..."
@@ -72,6 +81,24 @@ export default function UserBookSales() {
                 uniqueKey="id"
                 onSelectedItemsChange={setSelectedItems}
                 selectedItems={selectedItems}
+                styles={{
+                  backdrop: styles.multiSelectBackdrop,
+                  selectToggle: styles.multiSelectBox,
+                  chipContainer: styles.multiSelectChipContainer,
+                  chipText: styles.multiSelectChipText,
+                }}
+              />
+
+              <SectionedMultiSelect
+                selectText="Género Literario"
+                searchPlaceholderText="Escoja lo que aplique..."
+                modalAnimationType="slide"
+                colors={{primary: '#8A19D6'}}
+                items={itemsGenre}
+                IconRenderer={Icon}
+                uniqueKey="id"
+                onSelectedItemsChange={setSelectedItemsGenre}
+                selectedItems={selectedItemsGenre}
                 styles={{
                   backdrop: styles.multiSelectBackdrop,
                   selectToggle: styles.multiSelectBox,
