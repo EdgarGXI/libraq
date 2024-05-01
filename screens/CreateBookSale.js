@@ -16,7 +16,7 @@ export default function UserBookSales() {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      //allowsEditing: true, ios mata esto
+      //allowsEditing: true,
       aspect: [6, 10],
     });
 
@@ -50,15 +50,14 @@ export default function UserBookSales() {
         
         <ScrollView>
           <View style={{alignItems: 'center'}}>
-            <SimpleInput placeholder="Nombre del libro" fontSize={18} simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
-            <SimpleInput placeholder="Autor" simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
+            <SimpleInput placeholder="Nombre del libro" fontSize={18} simple={true} styleDiv={{width: '80%', justifyContent: 'center'}} styleInput={{textAlign: 'center'}}/>
+            <SimpleInput placeholder="Autor" simple={true} styleDiv={{width: '80%', justifyContent: 'center'}} styleInput={{textAlign: 'center'}}/>
             <View style={{flexDirection: 'row', width:'80%', justifyContent: 'space-between'}}>
-              <SimpleInput placeholder="Editorial" simple={1} styleDiv={{width: '50%', justifyContent: 'center'}} />
-              <SimpleInput placeholder="Año" simple={1} inputMode="numeric" maxLength={4} styleDiv={{width: '50%', justifyContent: 'center'}}/>
+              <SimpleInput placeholder="Editorial" simple={true} styleDiv={{width: '50%', justifyContent: 'center'}} styleInput={{textAlign: 'center'}}/>
+              <SimpleInput placeholder="Año" simple={true} inputMode="numeric" maxLength={4} styleDiv={{width: '50%', justifyContent: 'center'}} styleInput={{textAlign: 'center'}}/>
             </View>
-            <SimpleInput placeholder="Precio" simple={1} inputMode="decimal" icon={<NormalText>$</NormalText>} styleDiv={{width: '80%', justifyContent: 'center'}} />
-            <SimpleInput placeholder="Tipo de tapa (Blanda/Dura)" simple={1} styleDiv={{width: '80%', justifyContent: 'center'}} />
-
+            <SimpleInput placeholder="Precio" simple={true} inputMode="decimal" icon={<NormalText>$</NormalText>} styleDiv={{width: '80%', justifyContent: 'center'}} />
+            <SimpleInput placeholder="Tipo de tapa (Blanda/Dura)" simple={true} styleDiv={{width: '80%', justifyContent: 'center'}} />
             <View style={{width: 210, backgroundColor: '#ccc', marginVertical: 20, height: 300}}>
               <Image 
                 resizeMode="contain"
@@ -68,7 +67,7 @@ export default function UserBookSales() {
             </View>
             <PurpleButton title="Subir imagen" onPress={pickImage} />
 
-            <SimpleInput placeholder="Descripción" simple={1} styleDiv={{width: '80%'}} multiline={true} numberOfLines={5} />
+            <SimpleInput placeholder="Descripción" simple={true} styleDiv={{width: '80%'}} multiline={true} numberOfLines={5} />
 
             <View style={{width: '80%', backgroundColor: '#F9FBFF', gap: 10, paddingVertical: 10}}>
               <SectionedMultiSelect
