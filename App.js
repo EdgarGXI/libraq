@@ -5,13 +5,15 @@ import StartScreen from './screens/StartScreen';
 import SignUp from './screens/SignUp';
 import SignIn from './screens/SignIn';
 import UserBookSales from './screens/UserBookSales';
+import UserBookOffers from './screens/UserBookOffers';
 import CreateBookSale from './screens/CreateBookSale';
 import Profile from './screens/Profile';
+import Home from './screens/Home';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Profile />
+      <Home />
     </View>
   );
 }
