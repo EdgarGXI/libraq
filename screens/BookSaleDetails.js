@@ -31,10 +31,8 @@ export default function BookSaleDetails({ route, navigation }) {
   
   return (
     <View style={styles.view0}>
-      <SafeAreaView style={{width: '100%', flex: 1}}>
+      <SafeAreaView style={{width: '100%', flex: 1}}
 
-        <TopBar user="TomCherry" />
-        
         <ScrollView>
           <NormalText style={{color: '#fff', backgroundColor: '#cb0c9f', padding: 8, width: '100%', textAlign: 'center', fontWeight: 700}}>{statusPurchase}</NormalText>
           <NormalText style={{color: '#fff', backgroundColor: '#8A19D6', padding: 8, width: '100%', display: statusShow!=statusPurchase ? 'block' : 'none', textAlign: 'center', fontWeight: 700}}>{statusShow}</NormalText>
