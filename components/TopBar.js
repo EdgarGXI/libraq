@@ -69,7 +69,7 @@ export default function TopBar(props) {
   const handleProfile = () => {
     ///////////////
     //////////////
-    navigation.navigate('Profile');
+    navigation.navigate('Perfil');
   };
   return(
     <View style={{flexDirection: 'row', height: '12%', paddingVertical: 10, paddingHorizontal: 25, alignItems: 'center'}}>
