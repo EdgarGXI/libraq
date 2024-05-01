@@ -1,11 +1,19 @@
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import Svg, { G, Path } from 'react-native-svg';
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import Svg, { Path } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 import SimpleInput from '../components/SimpleInput';
 import { WhiteButton, PurpleButton } from '../components/Buttons';
 import { TitleText, NormalText } from '../components/FontSizing';
 
 export default function SignUp() {
+
+  const navigation = useNavigation();
+  
+  const handleSignIn = () => {
+    navigation.navigate('SignIn');
+  };
+
   return (
     <View style={styles.view0}>
       
@@ -30,6 +38,7 @@ export default function SignUp() {
                 </Svg>
               } 
               inputMode="email"
+              styleInput={{ width: '90%' }}
             />
             <SimpleInput 
               placeholder="Contraseña"
@@ -39,10 +48,16 @@ export default function SignUp() {
                   <Path d="M10 11.1765C9 11.1765 8.23529 11.9412 8.23529 12.9412C8.23529 13.7059 8.70588 14.3529 9.41176 14.5882V15.8823C9.41176 16.2353 9.64706 16.4706 10 16.4706C10.3529 16.4706 10.5882 16.2353 10.5882 15.8823V14.5882C11.2941 14.3529 11.7647 13.7059 11.7647 12.9412C11.7647 11.9412 11 11.1765 10 11.1765ZM10 13.5294C9.64706 13.5294 9.41176 13.2941 9.41176 12.9412C9.41176 12.5882 9.64706 12.3529 10 12.3529C10.3529 12.3529 10.5882 12.5882 10.5882 12.9412C10.5882 13.2941 10.3529 13.5294 10 13.5294Z" fill="#8A19D6"/>
                 </Svg>
               } 
-              //secureTextEntry="True" lo mismo que en la de sign in, explota en android
+              secureTextEntry={true}
+              styleInput={{ width: '90%' }}
             />
             <PurpleButton title="Crear cuenta" fontSize={14} />
           </View>
+          <TouchableOpacity onPress={handleSignIn}>
+              <NormalText style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'center', paddingBottom: 10}}>
+                ¿Ya estás registrado? Inicia sesión.
+              </NormalText>
+          </TouchableOpacity>
           
           <View style={styles.cont}>
             <View style={styles.line} />
@@ -95,9 +110,10 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
-    aspectRatio: 1,
+    minWidth: '100%',
     width: '100%',
-    maxHeight: '60%',
+    height: 600,
+    aspectRatio: 1
   },
   cont: {
     alignItems: 'center',
@@ -114,4 +130,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
