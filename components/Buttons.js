@@ -5,7 +5,7 @@ export function WhiteButton(props) {
   const { onPress, title = null, fontSize = 14, fontColor = '#8A19D6', border, icon, style } = props;
   if (title!=null) {
     return (
-      <Pressable style={[styles.whiteButton, border, style]} onPress={onPress}>
+      <Pressable style={({ pressed }) => [styles.whiteButton, style, {opacity: pressed ? 0.8 : 1}]} onPress={onPress}>
         {icon}
         <Text 
           style={{
@@ -19,7 +19,7 @@ export function WhiteButton(props) {
     );
   } else {
     return (
-      <Pressable style={[styles.whiteButton, border, style]} onPress={onPress}>
+      <Pressable style={({ pressed }) => [styles.whiteButton, border, style, {opacity: pressed ? 0.8 : 1}]} onPress={onPress}>
         {icon}
       </Pressable>
     );
@@ -29,7 +29,7 @@ export function WhiteButton(props) {
 export function PurpleButton(props) {
   const { onPress, fontSize = 14, title, style } = props;
   return (
-    <Pressable style={[styles.purpleButton, style]} onPress={onPress}>
+    <Pressable style={({ pressed }) => [styles.purpleButton, style, {opacity: pressed ? 0.8 : 1}]} onPress={onPress}>
       <Text 
         style={{
           color: 'white',
