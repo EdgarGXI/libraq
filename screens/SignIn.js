@@ -127,10 +127,9 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
-    minWidth: '100%',
     width: '100%',
-    height: 600,
-    aspectRatio: 1
+    height: 500,
+    aspectRatio: 1,
   },
   cont: {
     alignItems: 'center',
