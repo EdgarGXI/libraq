@@ -1,7 +1,6 @@
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 
 import { PurpleButton } from '../components/Buttons';
-import { TitleText, NormalText } from '../components/FontSizing';
 import ProfileEdit from '../components/ProfileEdit';
 
 // la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
