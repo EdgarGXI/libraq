@@ -12,6 +12,7 @@ import CreateBookSale from './screens/CreateBookSale';
 import Profile from './screens/Profile';
 import Home from './screens/Home';
 import BookSaleDetails from './screens/BookSaleDetails';
+import ReviewList from './screens/ReviewList';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="Detalles de venta" component={BookSaleDetails} />
         <Stack.Screen name="Ventas" component={UserBookSales} options={{ headerShown: false }} />
         <Stack.Screen name="Pedidos" component={UserBookOffers} options={{ headerShown: false }} />
+        <Stack.Screen name="Reseñas" component={ReviewList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
