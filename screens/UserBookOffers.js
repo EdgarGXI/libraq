@@ -17,7 +17,7 @@ export default function UserBookOffers() {
         <TopBar user="TomCherry" />
         
          <ScrollView style={{alignItems: 'center'}}>
-          <View style={{alignItems: 'center', gap: 30, width: '90%'}}>
+          <View style={{alignItems: 'center', gap: 20, width: '90%'}}>
             <BookSale 
               id="" 
               title="La Cadena de Hierro" 
