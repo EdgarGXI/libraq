@@ -16,7 +16,7 @@ export default function SignUp({route, navigation) {
   const [valuePass, setPass] = useState("-");
 
   const handleCreateAcc = () => {
-    navigation.navigate('Perfil', {editMode: "x", valueEmail: valueEmail, valuePass: valuePass});
+    navigation.navigate('Perfil', {editMode: 'x', valueEmail: valueEmail, valuePass: valuePass});
   };
 
   return (
