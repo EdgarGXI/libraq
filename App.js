@@ -29,6 +29,7 @@ export default function App() {
         <Stack.Screen name="Ventas" component={UserBookSales} options={{ headerShown: false }} />
         <Stack.Screen name="Pedidos" component={UserBookOffers} options={{ headerShown: false }} />
         <Stack.Screen name="Reseñas" component={ReviewList} />
+        <Stack.Screen name="Crear venta nueva" component={CreateBookSale} />
       </Stack.Navigator>
     </NavigationContainer>
   );
