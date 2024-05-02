@@ -24,7 +24,7 @@ export default function Profile({ route }) {
   } else {
     buttonTitle = "Editar";
     editable = "none";
-    action = () => navigation.navigate('Perfil', {editMode: "x", valueEmail: {valueEmail}, valuePass: {valuePass}});  // Pasa a modo edición
+    action = () => navigation.navigate('Perfil', {editMode: true});  // Pasa a modo edición total
   } 
 
   return (
