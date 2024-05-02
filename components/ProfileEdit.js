@@ -4,7 +4,7 @@ import SimpleInput from '../components/SimpleInput';
 import { TitleText, NormalText } from '../components/FontSizing';
 
 export default function ProfileEdit(props) {
-  const { editable, fetch } = props;
+  const { editable, fetch, valueEmail="", valuePass="" } = props;
   var editableBool, data;
   if (editable=='all') { //editable all permite que se editen todos
     editableBool = [true,true];
@@ -17,8 +17,8 @@ export default function ProfileEdit(props) {
   data = {
       "name": "",
       "lastName": "",
-      "email": "",
-      "password": "******",
+      "email": valueEmail,
+      "password": valuePass,
       "dpt": "",
       "city": "",
       "postCode": "",
@@ -29,7 +29,7 @@ export default function ProfileEdit(props) {
   
   return (
     <>
-      <View style={{borderRadius: 100, aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
+      <View style={{borderRadius: '100%', aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
         <Image
           resizeMode="stretch"
           source={require('../assets/images/avatar.png')}
@@ -65,10 +65,10 @@ export default function ProfileEdit(props) {
         
         <SimpleInput 
           placeholder="Contraseña" 
-          secureTextEntry={true}
+          secureTextEntry="True"
           editable={editableBool[1]}
           defaultValue={data["password"]}
-          styleInput={{width: '100%'}} 
+          styleInput={{width: '100%'}}
         />
 
         <TouchableOpacity>
