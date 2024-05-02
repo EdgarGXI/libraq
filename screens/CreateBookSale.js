@@ -11,7 +11,7 @@ import TopBar from '../components/TopBar';
 import { NormalText } from '../components/FontSizing';
 
 
-export default function UserBookSales() {
+export default function CreateBookSale() {
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
