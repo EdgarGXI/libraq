@@ -1,5 +1,6 @@
 import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import Svg, { Path } from 'react-native-svg';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import SimpleInput from '../components/SimpleInput';
@@ -12,6 +13,13 @@ export default function SignUp() {
   
   const handleSignIn = () => {
     navigation.navigate('SignIn');
+  };
+
+  const [valueEmail, setEmail] = useState("-");
+  const [valuePass, setPass] = useState("-");
+
+  const handleCreateAcc = () => {
+    navigation.navigate('Perfil', {editMode: "x", valueEmail: valueEmail, valuePass: valuePass});
   };
 
   return (
@@ -39,6 +47,7 @@ export default function SignUp() {
               } 
               inputMode="email"
               styleInput={{ width: '90%' }}
+              onChangeText={newText => setEmail(newText)}
             />
             <SimpleInput 
               placeholder="Contraseña"
@@ -50,8 +59,13 @@ export default function SignUp() {
               } 
               secureTextEntry={true}
               styleInput={{ width: '90%' }}
+              onChangeText={newText => setPass(newText)}
             />
-            <PurpleButton title="Crear cuenta" fontSize={14} />
+            <PurpleButton 
+              title="Crear cuenta" 
+              fontSize={14} 
+              onPress={handleCreateAcc}
+            />
           </View>
           <TouchableOpacity onPress={handleSignIn}>
               <NormalText style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'center', paddingBottom: 10}}>
@@ -110,8 +124,9 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
+    minWidth: '100%',
     width: '100%',
-    height: 500,
+    height: 600,
     aspectRatio: 1
   },
   cont: {
