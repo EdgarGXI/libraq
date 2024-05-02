@@ -52,7 +52,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
             <MiniText style={{color: pedidosActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Pedidos</MiniText>
           </View>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Perfil')} >
+        <Pressable onPress={ () => navigation.navigate('Perfil', {editMode: 'none'}) } >
           <View style={{aspectRatio: 1.1, alignItems: 'center'}}>
             <Svg width="35" height="35" viewBox="0 0 24 24" fill="none">
               <G id="SVGRepo_bgCarrier" strokeWidth="0"></G><G id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></G>
