@@ -42,9 +42,9 @@ export default function UserBookOffers() {
             />
           </View>
         </ScrollView>
-
-        <BottomNavBar pedidosActive={true} />
+                
       </SafeAreaView>
+      <BottomNavBar pedidosActive={true} />
     </View>
   );
 }
