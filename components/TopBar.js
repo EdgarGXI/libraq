@@ -1,10 +1,4 @@
-import {
-  View,
-  Image,
-  Text,
-  TouchableHighlight,
-  Pressable
-} from "react-native";
+import { View, Image, Pressable } from "react-native";
 import Svg, { G, Path, Circle } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
@@ -69,10 +63,10 @@ export default function TopBar(props) {
   const handleProfile = () => {
     ///////////////
     //////////////
-    navigation.navigate('Perfil');
+    navigation.navigate('Perfil', {editMode: 'none'});
   };
   return(
-    <View style={{flexDirection: 'row', height: '12%', paddingVertical: 10, paddingHorizontal: 25, alignItems: 'center'}}>
+    <View style={{flexDirection: 'row', height: 80, paddingVertical: 10, paddingHorizontal: 25, alignItems: 'center',backgroundColor: 'white'}}>
       <View style={{flexDirection: 'row', alignItems: 'center', width: '80%', gap: 10}}>
         <Pressable onPress={handleProfile} >
           <View style={{height: '80%', aspectRatio: 1}}>
