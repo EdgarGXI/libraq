@@ -73,9 +73,10 @@ export default function BookSaleDetails({ route, navigation }) {
               {genresChip}
             </View>
 
-            <View style={{justifyContent: 'space-between', flexDirection: 'row', marginTop: 25, marginBottom: 40}}>
-              <PurpleButton title="Pedir" style={{width: '50%'}}/>
+            <View style={{width: '100%', justifyContent: 'space-between', flexDirection: 'row', marginTop: 25, marginBottom: 40}}>
+              <PurpleButton title="Pedir" style={{width: '50%', paddingHorizontal: 5, paddingVertical: 10}}/>
               <WhiteButton 
+                style={{width: '40%', paddingHorizontal: 5, paddingVertical: 10}}
                 title="Ver reseñas" 
                 onPress={() => navigation.navigate('Reseñas', {bookSaleID: id})}
               />
