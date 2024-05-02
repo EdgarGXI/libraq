@@ -2,7 +2,7 @@ import { View, Pressable } from "react-native";
 import Svg, { G, Path, Rect } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
-import { MiniText } from './FontSizing';
+import { TinyText } from './FontSizing';
 
 export default function BottomNavBar({homeActive=false, ventasActive=false, pedidosActive=false, cuentaActive=false}) {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
                 <Path fillRule="evenodd" clip-rule="evenodd" d="M13.9931 3.43368C12.8564 2.42331 11.1436 2.42331 10.0069 3.43368L2.33565 10.2526C1.92286 10.6195 1.88568 11.2516 2.2526 11.6644C2.61952 12.0771 3.25159 12.1143 3.66437 11.7474L4.00001 11.4491L4.00001 17.0658C3.99996 17.9523 3.99992 18.7161 4.08215 19.3278C4.17028 19.9833 4.36903 20.6117 4.87869 21.1213C5.38835 21.631 6.0167 21.8297 6.67222 21.9179C7.28388 22.0001 8.04769 22 8.93418 22H15.0658C15.9523 22 16.7161 22.0001 17.3278 21.9179C17.9833 21.8297 18.6117 21.631 19.1213 21.1213C19.631 20.6117 19.8297 19.9833 19.9179 19.3278C20.0001 18.7161 20.0001 17.9523 20 17.0659L20 11.4491L20.3356 11.7474C20.7484 12.1143 21.3805 12.0771 21.7474 11.6644C22.1143 11.2516 22.0772 10.6195 21.6644 10.2526L13.9931 3.43368ZM12 16C11.4477 16 11 16.4477 11 17V19C11 19.5523 10.5523 20 10 20C9.44772 20 9 19.5523 9 19V17C9 15.3431 10.3431 14 12 14C13.6569 14 15 15.3431 15 17V19C15 19.5523 14.5523 20 14 20C13.4477 20 13 19.5523 13 19V17C13 16.4477 12.5523 16 12 16Z" fill={homeActive ? '#8A19D6': '#9e9e9e'}></Path> 
               </G>
             </Svg>
-            <MiniText style={{color: homeActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Inicio</MiniText>
+            <TinyText style={{color: homeActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Inicio</TinyText>
           </View>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Ventas')} >
@@ -36,7 +36,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
                 </G> 
               </G>
             </Svg>
-            <MiniText style={{color: ventasActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Ventas</MiniText>
+            <TinyText style={{color: ventasActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Ventas</TinyText>
           </View>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Pedidos')} >
@@ -49,7 +49,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
                 <Path d="M8 20L8 6.41421L10.2929 8.7071C10.6834 9.09763 11.3166 9.09763 11.7071 8.7071C12.0976 8.31658 12.0976 7.68341 11.7071 7.29289L7.70711 3.29289C7.31658 2.90237 6.68342 2.90237 6.29289 3.29289L2.29289 7.29289C1.90237 7.68341 1.90237 8.31658 2.29289 8.7071C2.68342 9.09763 3.31658 9.09763 3.70711 8.7071L6 6.41421L6 20C6 20.5523 6.44772 21 7 21C7.55229 21 8 20.5523 8 20Z" fill={pedidosActive ? '#8A19D6': '#9e9e9e'}></Path> 
               </G>
             </Svg>
-            <MiniText style={{color: pedidosActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Pedidos</MiniText>
+            <TinyText style={{color: pedidosActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Pedidos</TinyText>
           </View>
         </Pressable>
         <Pressable onPress={ () => navigation.navigate('Perfil', {editMode: 'none'}) } >
@@ -61,7 +61,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
                 <Path d="M12.0002 14.5C6.99016 14.5 2.91016 17.86 2.91016 22C2.91016 22.28 3.13016 22.5 3.41016 22.5H20.5902C20.8702 22.5 21.0902 22.28 21.0902 22C21.0902 17.86 17.0102 14.5 12.0002 14.5Z" fill={cuentaActive ? '#8A19D6': '#9e9e9e'}></Path> 
               </G>
             </Svg>
-            <MiniText style={{color: cuentaActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Cuenta</MiniText>
+            <TinyText style={{color: cuentaActive ? '#8A19D6': '#9e9e9e', fontWeight: 700}}>Cuenta</TinyText>
           </View>
         </Pressable>
       </View>
