@@ -1,13 +1,11 @@
 import { View, StyleSheet, Image, ScrollView } from "react-native";
-import { useNavigation } from '@react-navigation/native';
 
 import { PurpleButton } from '../components/Buttons';
 import ProfileEdit from '../components/ProfileEdit';
 
 // la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
-export default function Profile({ route }) {
+export default function Profile({route, navigation}) {
   const { editMode, valueEmail="", valuePass="" } = route.params;
-  const navigation = useNavigation();
   
   var buttonTitle, action; 
   if (editMode === true) {
