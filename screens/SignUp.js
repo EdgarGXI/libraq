@@ -1,15 +1,12 @@
 import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import Svg, { Path } from 'react-native-svg';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 import SimpleInput from '../components/SimpleInput';
 import { WhiteButton, PurpleButton } from '../components/Buttons';
 import { TitleText, NormalText } from '../components/FontSizing';
 
-export default function SignUp() {
-
-  const navigation = useNavigation();
+export default function SignUp({route, navigation) {
   
   const handleSignIn = () => {
     navigation.navigate('SignIn');
