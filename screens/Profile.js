@@ -1,21 +1,31 @@
-import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 import { PurpleButton } from '../components/Buttons';
 import ProfileEdit from '../components/ProfileEdit';
 
 // la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
-export default function Profile(props) {
-  const { editMode } = props;
+export default function Profile({ route }) {
+  const { editMode, valueEmail="", valuePass="" } = route.params;
+  const navigation = useNavigation();
+  
   var buttonTitle, action; 
-  if (editMode) {
+  if (editMode === true) {
     buttonTitle = "Guardar";
     editable = "all";
-    action = () => {}; // Acción de guardar cambios
+    action = () => {}; // Acción de guardar cambios en base de datos
+  } else if (editMode === "x") {
+    buttonTitle = "Guardar";
+    editable = "x";
+    action = () => {// Acción de guardar cambios en base de datos. y después redirigir a home.
+      console.log("saving");
+      navigation.navigate('Home');
+    }; 
   } else {
     buttonTitle = "Editar";
     editable = "none";
-    action = () => {};  // Pasa a modo edición
-  }
+    action = () => navigation.navigate('Perfil', {editMode: "x", valueEmail: {valueEmail}, valuePass: {valuePass}});  // Pasa a modo edición
+  } 
 
   return (
     <View style={styles.view0}>
@@ -29,7 +39,7 @@ export default function Profile(props) {
       <ScrollView style={styles.scrollview}>
         <View style={styles.view1}>
           <View style={styles.view2}>
-            <ProfileEdit editable={editable} fetch={true} />
+            <ProfileEdit editable={editable} fetch={true} valueEmail={valueEmail} valuePass={valuePass} />
             <PurpleButton title={buttonTitle} onPress={action} />
           </View>
         </View>
