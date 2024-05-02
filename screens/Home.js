@@ -109,10 +109,9 @@ export default function Home() {
             />
           </View>
         </ScrollView>
-
-        <BottomNavBar homeActive={true} />
         
       </SafeAreaView>
+      <BottomNavBar homeActive={true} />
     </View>
   );
 }
