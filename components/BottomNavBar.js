@@ -8,7 +8,7 @@ export default function BottomNavBar({homeActive=false, ventasActive=false, pedi
   const navigation = useNavigation();
   
   return(
-    <View style={{flexDirection: 'row', height: 80, width: '100%', paddingVertical: 10, paddingHorizontal: 5, alignItems: 'center', backgroundColor: 'white', alignSelf: 'flex-end', borderRadius: 20, shadowColor: '#9e9e9e', shadowOpacity: 0.1}}>
+    <View style={{height: 80, width: '100%', paddingVertical: 10, paddingHorizontal: 5, alignItems: 'center', backgroundColor: 'white', alignSelf: 'flex-end', borderRadius: 20, shadowColor: '#9e9e9e', shadowOpacity: 0.1}}>
       <View style={{flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-around'}}>
         <Pressable onPress={() => navigation.navigate('Home')} >
           <View style={{aspectRatio: 1.1, alignItems: 'center'}}>
