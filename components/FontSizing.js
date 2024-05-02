@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 import normalize from './FontNormalize';
 
+export class TinyText extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <Text style={[{fontSize: normalize(8)}, this.props.style]}>
+        {this.props.children}
+      </Text>
+    );
+  }
+}
+
 export class MiniText extends Component {
   constructor(props) {
     super(props);
