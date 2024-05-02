@@ -107,10 +107,10 @@ export default function CreateBookSale() {
               />
             </View>
 
-            <View style={{marginBottom: 40, marginTop: 10, flexDirection: 'row',  width:'80%', justifyContent: 'space-around'}}>
-              <WhiteButton title="Cancelar" style={{paddingHorizontal: 20}} />
-              <PurpleButton title="Publicar" style={{paddingHorizontal: 20}} />
-            </View>
+            <PurpleButton 
+              title="Publicar"
+              style={{paddingHorizontal: 40, marginTop: 10, marginBottom: 40}} 
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
