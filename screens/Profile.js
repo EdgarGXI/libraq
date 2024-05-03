@@ -1,50 +1,88 @@
 import { View, StyleSheet, Image, ScrollView } from "react-native";
+import { supabase } from '../supabase';
+import { Alert } from 'react-native';
+import { useState } from 'react';
 
 import { PurpleButton } from '../components/Buttons';
 import ProfileEdit from '../components/ProfileEdit';
 
-// la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
-export default function Profile({route, navigation}) {
-  const { editMode, valueEmail="", valuePass="" } = route.params;
-  
-  var buttonTitle, action; 
+export default function Profile({ route, navigation }) {
+  const { editMode, valueEmail = "", valuePass = "" } = route.params;
+
+  const [formData, setFormData] = useState({
+    name: '',
+    lastname: '',
+    email: valueEmail, // Pre-fill with the email from SignUp
+    password: valuePass, // Pre-fill with the password from SignUp
+    bio: '',
+    dpt: '',
+    city: '',
+    postcode: null,
+    address: '',
+  });
+
+  var buttonTitle, action;
   if (editMode === true) {
     buttonTitle = "Guardar";
     editable = "all";
-    action = () => {}; // Acción de guardar cambios en base de datos
+    action = () => { }; // Acción de guardar cambios en base de datos
   } else if (editMode === "x") {
     buttonTitle = "Guardar";
     editable = "x";
-    action = () => {// Acción de guardar cambios en base de datos. y después redirigir a home.
-      console.log("saving");
+const action = async () => {
+  try {
+    // Insert the user data into the 'Account' table
+    const { data, error } = await supabase
+      .from('Account')
+      .insert([formData])
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    // Check if data is not null
+    if (data) {
+      // Get the inserted row data
+      const insertedRow = data[0];
+
+      // Get the inserted accountID
+      const accountID = insertedRow.accountID;
+
+      // Optionally, you can navigate to the 'Home' screen after successful insertion
       navigation.navigate('Home');
-    }; 
+    } else {
+      throw new Error('Error inserting data into the database');
+    }
+  } catch (error) {
+    Alert.alert('Error', error.message);
+  }
+};
   } else {
     buttonTitle = "Editar";
     editable = "none";
-    action = () => navigation.navigate('Perfil', {editMode: true});  // Pasa a modo edición total
-  } 
+    action = () => navigation.navigate('Perfil', { editMode: true });  // Pasa a modo edición total
+  }
 
   return (
     <View style={styles.view0}>
       <Image
-          resizeMode="stretch"
-          source={require("../assets/images/bg-register.png")}
-          style={styles.image1}
-      >
-      </Image>
-      
+        resizeMode="stretch"
+        source={require("../assets/images/bg-register.png")}
+        style={styles.image1}
+      />
+
       <ScrollView style={styles.scrollview}>
         <View style={styles.view1}>
           <View style={styles.view2}>
-            <ProfileEdit editable={editable} fetch={true} valueEmail={valueEmail} valuePass={valuePass} />
+            <ProfileEdit editable={editable} fetch={true} valueEmail={valueEmail} valuePass={valuePass} onChangeText={(field, value) => setFormData({ ...formData, [field]: value })} />
             <PurpleButton title={buttonTitle} onPress={action} />
           </View>
         </View>
       </ScrollView>
 
     </View>
-    
+
   );
 }
 

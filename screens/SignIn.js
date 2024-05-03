@@ -5,7 +5,7 @@ import SimpleInput from '../components/SimpleInput';
 import { WhiteButton, PurpleButton } from '../components/Buttons';
 import { TitleText, NormalText } from '../components/FontSizing';
 
-export default function SignIn({route, navigation) {
+export default function SignIn({route, navigation}) {
 
   //Este handle va a cambiar cuando toque hacer las verificaciones y eso, de ultimo se manda al home.
   const handleHome = () => {
