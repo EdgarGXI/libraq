@@ -1,7 +1,6 @@
 import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { useState } from 'react';
 
-import { supabase } from '../supabase';
 import { insertRow } from '../db';
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
