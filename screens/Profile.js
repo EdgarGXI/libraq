@@ -1,88 +1,208 @@
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import { supabase } from '../supabase';
-import { Alert } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { useState } from 'react';
 
+import { supabase } from '../supabase';
 import { PurpleButton } from '../components/Buttons';
-import ProfileEdit from '../components/ProfileEdit';
+import SimpleInput from '../components/SimpleInput';
+import { TitleText, NormalText } from '../components/FontSizing';
 
+// la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
 export default function Profile({ route, navigation }) {
-  const { editMode, valueEmail = "", valuePass = "" } = route.params;
+  const { editMode, valueEmail="", valuePass="" } = route.params;
 
-  const [formData, setFormData] = useState({
-    name: '',
-    lastname: '',
-    email: valueEmail, // Pre-fill with the email from SignUp
-    password: valuePass, // Pre-fill with the password from SignUp
-    bio: '',
-    dpt: '',
-    city: '',
-    postcode: null,
-    address: '',
+  const [data, setFormData] = useState({
+    'name': '',
+    'lastname': '',
+    'email': valueEmail, // Pre-fill with the email from SignUp
+    'password': valuePass, // Pre-fill with the password from SignUp
+    'bio': '',
+    'dpt': '',
+    'city': '',
+    'postcode': null,
+    'address': '',
   });
-
-  var buttonTitle, action;
+  
+  const handleChange = (id, text) => {
+    setFormData( data => ({
+      ...data, [id]: text
+    }));
+  }
+  
+  var buttonTitle, action, editableBool; 
   if (editMode === true) {
     buttonTitle = "Guardar";
-    editable = "all";
-    action = () => { }; // Acción de guardar cambios en base de datos
+    editableBool = [true,true]; //editable all permite que se editen todos
+    // en este caso debería hacerse un fetch con la info para los default values y cambiar con:
+    // setFormData()
   } else if (editMode === "x") {
     buttonTitle = "Guardar";
-    editable = "x";
-const action = async () => {
-  try {
-    // Insert the user data into the 'Account' table
-    const { data, error } = await supabase
-      .from('Account')
-      .insert([formData])
-      .single();
+    editableBool = [true,false];
+    action = async () => {  //Guarda cambios de usuario que acaba de crear cuenta
+      try {
+        console.log("trying to insert into supabase");
+        // esto no sirve, pero lo que falla es como tal la conexión a la base de datos. los datos de input le están llegando bien
+        // Insert the user data into the 'Account' table
+        const { data, error } = await supabase
+          .from('Account')
+          .insert({
+            name: data["name"],
+            lastname: data["lastname"],
+            email: data["email"],
+            password: data["password"],
+            bio: data["bio"],
+            dpt: data["dpt"],
+            city: data["city"],
+            postcode: data["postcode"],
+            address: data["address"],
+          })
+          .single();
 
-    if (error) {
-      throw error;
+        if (error) {
+          throw error;
+        }
+
+        // Check if data is not null
+        if (data) {
+          // Get the inserted row data
+          const insertedRow = data[0];
+
+          // Get the inserted accountID
+          const accountID = insertedRow.accountID;
+
+          // Optionally, you can navigate to the 'Home' screen after successful insertion
+          navigation.navigate('Home');
+        } else {
+          throw new Error('Error inserting data into the database');
+        }
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
     }
-
-    // Check if data is not null
-    if (data) {
-      // Get the inserted row data
-      const insertedRow = data[0];
-
-      // Get the inserted accountID
-      const accountID = insertedRow.accountID;
-
-      // Optionally, you can navigate to the 'Home' screen after successful insertion
-      navigation.navigate('Home');
-    } else {
-      throw new Error('Error inserting data into the database');
-    }
-  } catch (error) {
-    Alert.alert('Error', error.message);
-  }
-};
   } else {
     buttonTitle = "Editar";
-    editable = "none";
-    action = () => navigation.navigate('Perfil', { editMode: true });  // Pasa a modo edición total
-  }
+    editableBool = [false,false];
+    action = () => navigation.navigate('Perfil', {editMode: true});  // Pasa a modo edición
+  } 
 
   return (
     <View style={styles.view0}>
       <Image
-        resizeMode="stretch"
-        source={require("../assets/images/bg-register.png")}
-        style={styles.image1}
-      />
-
+          resizeMode="stretch"
+          source={require("../assets/images/bg-register.png")}
+          style={styles.image1}
+      >
+      </Image>
+      
       <ScrollView style={styles.scrollview}>
         <View style={styles.view1}>
           <View style={styles.view2}>
-            <ProfileEdit editable={editable} fetch={true} valueEmail={valueEmail} valuePass={valuePass} onChangeText={(field, value) => setFormData({ ...formData, [field]: value })} />
+
+            <View style={{borderRadius: 100, aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
+              <Image
+                resizeMode="stretch"
+                source={require('../assets/images/avatar.png')}
+                style={{flex: 1, width: null, height: null, aspectRatio: 1}}
+              />
+            </View>
+
+            <TitleText>Información</TitleText>
+            
+            <View style={{gap: 20, paddingVertical: 20}}>
+
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <SimpleInput 
+                  placeholder="Nombre"
+                  styleDiv={{width: '48%'}}
+                  editable={editableBool[0]}
+                  defaultValue={data["name"]}
+                  onChangeText={newText => handleChange("name", newText)}
+                />
+                <SimpleInput 
+                  placeholder="Apellido"
+                  styleDiv={{width: '48%'}}
+                  editable={editableBool[0]}
+                  defaultValue={data["lastname"]}
+                  onChangeText={newText => handleChange("lastname", newText)}
+                />
+              </View>
+
+              <SimpleInput 
+                placeholder="Correo electrónico"
+                inputMode="email"
+                editable={editableBool[1]}
+                defaultValue={data["email"]}
+                onChangeText={newText => handleChange("email", newText)}
+              />
+              
+              <SimpleInput 
+                placeholder="Contraseña" 
+                secureTextEntry={true}
+                editable={editableBool[1]}
+                defaultValue={data["password"]}
+                styleInput={{width: '100%'}}
+                onChangeText={newText => handleChange("password", newText)}
+              />
+
+              <TouchableOpacity>
+                <NormalText 
+                  style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end'}}
+                >
+                ¿Olvidaste tu contraseña?
+                </NormalText>
+              </TouchableOpacity>
+              
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <SimpleInput 
+                  placeholder="Departamento"
+                  styleDiv={{width: '48%'}}
+                  editable={editableBool[0]}
+                  defaultValue={data["dpt"]}
+                  onChangeText={newText => handleChange("dpt", newText)}
+                />
+                <SimpleInput 
+                  placeholder="Ciudad"
+                  styleDiv={{width: '48%'}}
+                  editable={editableBool[0]}
+                  defaultValue={data["city"]}
+                  onChangeText={newText => handleChange("city", newText)}
+                />
+              </View>
+
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <SimpleInput 
+                  placeholder="Código Postal"
+                  styleDiv={{width: '48%'}}
+                  inputMode="numeric"
+                  editable={editableBool[0]}
+                  defaultValue={data["postCode"]}
+                  onChangeText={newText => handleChange("postcode", newText)}
+                />
+                <SimpleInput 
+                  placeholder="Dirección"
+                  styleDiv={{width: '48%'}}
+                  editable={editableBool[0]}
+                  defaultValue={data["address"]}
+                  onChangeText={newText => handleChange("address", newText)}
+                />
+              </View>
+
+              <SimpleInput 
+                placeholder="Biografía"
+                multiline={true}
+                numberOfLines={5}
+                editable={editableBool[0]}
+                defaultValue={data["bio"]}
+                onChangeText={newText => handleChange("bio", newText)}
+              />
+            </View>
+
             <PurpleButton title={buttonTitle} onPress={action} />
           </View>
         </View>
       </ScrollView>
 
     </View>
-
+    
   );
 }
 
@@ -118,4 +238,3 @@ const styles = StyleSheet.create({
     aspectRatio: 1
   },
 });
-
