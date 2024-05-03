@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import Svg, { Path } from 'react-native-svg';
 import { useState } from 'react';
 
@@ -14,13 +14,21 @@ export default function SignUp({ route, navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCreateAcc = () => {
-    ///if (email.length === 0 || password.length === 0) {
-    ///  Alert.alert("Error", "Please enter both email and password.");
-    ///  return;
-    ///}
-
-    navigation.navigate('Perfil', { editMode: 'x', valueEmail: email, valuePass: password });
+  const handleCreateAcc = async () => {
+    if (email && password) {  // email & password not null
+      let acc = await fetchByColumn(
+        table="account", 
+        column="accountid", 
+        value=email, 
+      );
+      if (acc) {
+        // email already in use
+        console.log('email already in use')
+      } else {
+        // can create new account
+        navigation.navigate('Perfil', { editMode: 'x', valueEmail: email, valuePass: password });
+      }
+    }
   };
 
 
@@ -46,7 +54,7 @@ export default function SignUp({ route, navigation }) {
               }
               inputMode="email"
               styleInput={{ width: '90%' }}
-              onChangeText={setEmail}
+              onChangeText={newText => setEmail(newText)}
               value={email}
             />
             <SimpleInput
@@ -59,7 +67,7 @@ export default function SignUp({ route, navigation }) {
               }
               secureTextEntry={true}
               styleInput={{ width: '90%' }}
-              onChangeText={setPassword}
+              onChangeText={newText => setPassword(newText)}
               value={password}
             />
             <PurpleButton
