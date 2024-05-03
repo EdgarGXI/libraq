@@ -2,7 +2,7 @@ import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-nat
 import { useState } from 'react';
 
 import { supabase } from '../supabase';
-//import { supabase } from '/utils/supabase'
+import { insertRow } from '../db';
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import { TitleText, NormalText } from '../components/FontSizing';
@@ -38,38 +38,23 @@ export default function Profile({ route, navigation }) {
   } else if (editMode === "x") {
     buttonTitle = "Guardar";
     editableBool = [true,false];
-    action = async () => {  //Guarda cambios de usuario que acaba de crear cuenta
-      try {
-        // Insert the user data into the 'account' table
-        const { status, error } = await supabase
-        .from('account')
-        .insert({
-          name: data["name"],
-          lastname: data["lastname"],
-          email: data["email"],
-          password: data["password"],
-          bio: data["bio"],
-          dpt: data["dpt"],
-          city: data["city"],
-          postcode: data["postcode"],
-          address: data["address"],
-        });
-
-        if (error) {
-          throw error;
-        }
-        console.log(status);
-        // Check if data is not null
-        if (status === 201) {
-          // Optionally, you can navigate to the 'Home' screen after successful insertion
-          navigation.navigate('Home');
-        } else {
-          throw new Error('Error inserting data into the database');
-        }
-      } catch (error) {
-        console.log('Error', error.message);
-      }
-    }
+    action = async () => insertRow({
+      table: 'account',
+      row: {
+        name: data["name"],
+        lastname: data["lastname"],
+        email: data["email"],
+        password: data["password"],
+        bio: data["bio"],
+        dpt: data["dpt"],
+        city: data["city"],
+        postcode: data["postcode"],
+        address: data["address"],
+      },
+      onSuccess: () => {
+        navigation.navigate('Home');
+      },
+    })
   } else {
     buttonTitle = "Editar";
     editableBool = [false,false];
@@ -230,3 +215,4 @@ const styles = StyleSheet.create({
     aspectRatio: 1
   },
 });
+
