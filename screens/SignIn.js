@@ -18,7 +18,7 @@ export default function SignIn({route, navigation}) {
       value: email,
     });
     console.log(acc);
-    if (acc && (password === acc[0]["password"])) { // email already in use --> check if password matches
+    if (acc.length > 0 && password === acc[0]["password"]) { // email already in use --> check if password matches
       navigation.navigate('Home', { user: {id: acc[0]['id'], name: acc[0]['name']}});
     } else { // else: error: email or password incorrect
       console.log("email or password wrong");
