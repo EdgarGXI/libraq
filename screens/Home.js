@@ -16,12 +16,15 @@ import BottomNavBar from '../components/BottomNavBar';
 // estadísticas solo aparecen si ventas del usuario > 0? o que aparezcan igualmente? idk
 //añadir filtros?
 
-export default function Home() {
+export default function Home({ route, navigation }) {
+  const { user } = route.params;
+  // user.id contiene el accountid
+  
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{width: '100%', flex: 1}}>
 
-        <TopBar user="TomCherry" />
+        <TopBar user={user.name} />
           
         <ScrollView style={{width: '90%', alignSelf: 'center'}}>
           <SimpleInput 
@@ -36,7 +39,6 @@ export default function Home() {
               </Svg>
             }
             styleDiv={{marginBottom: 20}}
-            secureTextEntry={false}
           /> 
 
           <TitleText style={{paddingBottom: 10}}>Estadísticas</TitleText>
@@ -98,19 +100,20 @@ export default function Home() {
           <View style={{alignItems: 'center', gap: 30, width: '100%'}}>
             <BookSale 
               id="" 
-              title="La Cadena de Hierro" 
+              title="La Cadena de Hierro si fuera un título mucho más largo" 
               author="Cassandra Clare" 
               editorial="Destino" 
               year="2024" 
               cover="Blanda" 
               price={20000} 
-              status="VENTA ACTIVA" 
+              statusShow="VENTA ACTIVA" 
+              statusPurchase="VENTA ACTIVA"
               date="24/12/2025"
             />
           </View>
         </ScrollView>
-        
       </SafeAreaView>
+      
       <BottomNavBar homeActive={true} />
     </View>
   );
