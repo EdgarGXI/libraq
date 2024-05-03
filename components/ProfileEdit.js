@@ -29,7 +29,7 @@ export default function ProfileEdit(props) {
   
   return (
     <>
-      <View style={{borderRadius: '100%', aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
+      <View style={{borderRadius: 100, aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
         <Image
           resizeMode="stretch"
           source={require('../assets/images/avatar.png')}
@@ -65,7 +65,7 @@ export default function ProfileEdit(props) {
         
         <SimpleInput 
           placeholder="Contraseña" 
-          secureTextEntry="True"
+          secureTextEntry={true}
           editable={editableBool[1]}
           defaultValue={data["password"]}
           styleInput={{width: '100%'}}
