@@ -2,6 +2,7 @@ import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-nat
 import { useState } from 'react';
 
 import { supabase } from '../supabase';
+//import { supabase } from '/utils/supabase'
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import { TitleText, NormalText } from '../components/FontSizing';
@@ -39,43 +40,34 @@ export default function Profile({ route, navigation }) {
     editableBool = [true,false];
     action = async () => {  //Guarda cambios de usuario que acaba de crear cuenta
       try {
-        console.log("trying to insert into supabase");
-        // esto no sirve, pero lo que falla es como tal la conexión a la base de datos. los datos de input le están llegando bien
-        // Insert the user data into the 'Account' table
-        const { data, error } = await supabase
-          .from('Account')
-          .insert({
-            name: data["name"],
-            lastname: data["lastname"],
-            email: data["email"],
-            password: data["password"],
-            bio: data["bio"],
-            dpt: data["dpt"],
-            city: data["city"],
-            postcode: data["postcode"],
-            address: data["address"],
-          })
-          .single();
+        // Insert the user data into the 'account' table
+        const { status, error } = await supabase
+        .from('account')
+        .insert({
+          name: data["name"],
+          lastname: data["lastname"],
+          email: data["email"],
+          password: data["password"],
+          bio: data["bio"],
+          dpt: data["dpt"],
+          city: data["city"],
+          postcode: data["postcode"],
+          address: data["address"],
+        });
 
         if (error) {
           throw error;
         }
-
+        console.log(status);
         // Check if data is not null
-        if (data) {
-          // Get the inserted row data
-          const insertedRow = data[0];
-
-          // Get the inserted accountID
-          const accountID = insertedRow.accountID;
-
+        if (status === 201) {
           // Optionally, you can navigate to the 'Home' screen after successful insertion
           navigation.navigate('Home');
         } else {
           throw new Error('Error inserting data into the database');
         }
       } catch (error) {
-        Alert.alert('Error', error.message);
+        console.log('Error', error.message);
       }
     }
   } else {
