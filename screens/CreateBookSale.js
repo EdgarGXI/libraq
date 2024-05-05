@@ -45,8 +45,6 @@ export default function CreateBookSale() {
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{width: '100%', flex: 1}}>
-
-        <TopBar user="TomCherry" />
         
         <ScrollView>
           <View style={{alignItems: 'center'}}>

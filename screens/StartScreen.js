@@ -1,27 +1,34 @@
-import { View, StyleSheet, Image } from "react-native";
+import * as SecureStore from 'expo-secure-store';
+import { StyleSheet, View, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
+import { useAuth } from '../Auth';
 import { WhiteButton } from '../components/Buttons';
 
-
-//Maybe en la pantalla de inicio en vez de poner comenzar poner sign in y sign up y hacer los respectivos botones?
-
-
-
-
 export default function StartScreen() {
+  const auth = useAuth();
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+      let userToken, userName;
+      try {
+        userToken = await SecureStore.getItemAsync('userToken');
+        userName = await SecureStore.getItemAsync('userName');
+        auth.dispatch({ type: 'RESTORE_TOKEN', token: userToken, name: userName});
+      } catch (e) {
+        // Restoring token failed
+        auth.dispatch({ type: 'SIGN_OUT' });
+      }
+    };
+    bootstrapAsync();
+  }, []);
+
   const navigation = useNavigation();
 
   const handleSignIn = () => {
     navigation.navigate('SignIn');
   };
-
-  //Dejo la variable lista para solo copy y paste de lo que esta abajo con sign in, eso de los botones ni idea pa que queden los dos
-  //simetricos xD 
-  const handleSignUp = () => {
-    navigation.navigate('SignUp');
-  };
-
+  
   return (
     <View style={styles.view0}>
       <View style={{ justifyContent: 'center', alignItems: 'center', gap: 20 }}>
@@ -50,6 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    aspectRatio: "0.6",
+    aspectRatio: 0.6,
   },
 });

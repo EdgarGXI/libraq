@@ -5,17 +5,20 @@ import {
   SafeAreaView
 } from "react-native";
 
+import { useAuth } from '../Auth';
 import { PurpleButton } from '../components/Buttons';
 import BookSale from '../components/BookSale';
 import TopBar from '../components/TopBar';
 import BottomNavBar from '../components/BottomNavBar';
 
 export default function UserBookSales({route, navigation}) {
+  const { userToken } = useAuth().state;
+  
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{width: '100%', flex: 1}}>
 
-        <TopBar user="TomCherry" />
+        <TopBar />
         
         <ScrollView contentContainerStyle={{ alignItems: 'center', marginBottom: 40 }}>
             <View style={{ alignItems: 'center', gap: 20, width: '90%' }}>

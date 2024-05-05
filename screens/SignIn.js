@@ -2,26 +2,24 @@ import { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import Svg, { G, Path } from 'react-native-svg';
 
+import { useAuth } from '../Auth';
 import SimpleInput from '../components/SimpleInput';
 import { WhiteButton, PurpleButton } from '../components/Buttons';
 import { TitleText, NormalText } from '../components/FontSizing';
-import { fetchByColumn } from '../db';
 
 export default function SignIn({route, navigation}) {
+  const auth = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [error, setErrorVisible] = useState(false);
+  
   const handleLogIn = async () => {
-    let acc = await fetchByColumn({
-      table: 'account', 
-      column: 'email', 
-      value: email,
-    });
-    console.log(acc);
-    if (acc.length > 0 && password === acc[0]["password"]) { // email already in use --> check if password matches
-      navigation.navigate('Home', { user: {id: acc[0]['id'], name: acc[0]['name']}});
-    } else { // else: error: email or password incorrect
-      console.log("email or password wrong");
+    try { // try to sign in with creds
+      auth.signIn({ email: email, password: password });
+      console.log("signed in");
+    } catch (e) { // on error, show error message
+      setErrorVisible(true);
+      console.log(e);
     }
   };
   const handleSignUp = () => {
@@ -52,7 +50,10 @@ export default function SignIn({route, navigation}) {
               } 
               inputMode="email"
               styleInput={{ width: '90%' }}
-              onChangeText={newText => setEmail(newText)}
+              onChangeText={newText => {
+                setEmail(newText); 
+                setErrorVisible(false);
+              }}
               value={email}
             />
             
@@ -66,7 +67,10 @@ export default function SignIn({route, navigation}) {
               } 
               secureTextEntry={true}
               styleInput={{ width: '90%' }}
-              onChangeText={newText => setPassword(newText)}
+              onChangeText={newText => {
+                setPassword(newText); 
+                setErrorVisible(false);
+              }}
               value={password}
             />
 
@@ -81,6 +85,19 @@ export default function SignIn({route, navigation}) {
                 ¿No tienes una cuenta? Regístrate.
               </NormalText>
             </TouchableOpacity>
+            
+            <NormalText 
+              style={{ 
+                color: 'red', 
+                fontWeight: 700, 
+                alignSelf: 'center', 
+                textAlign: 'center', 
+                display: error ? 'block' : 'none',
+              }} 
+              onPress={handleSignUp}
+              >
+              El correo o contraseña ingresados son inválidos.
+            </NormalText>
 
           </View>
           

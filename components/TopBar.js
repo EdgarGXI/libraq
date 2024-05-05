@@ -2,6 +2,7 @@ import { View, Image, Pressable } from "react-native";
 import Svg, { G, Path, Circle } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
+import { useAuth } from '../Auth';
 import { WhiteButton } from '../components/Buttons';
 import { TitleText } from './FontSizing';
 
@@ -56,7 +57,8 @@ function NotificationsButton(props) {
 }
 
 export default function TopBar(props) {
-  const { user, notif } = props;
+  const { notif } = props;
+  const { userName, userToken } = useAuth().state;
   const navigation = useNavigation();
   
 
@@ -77,7 +79,7 @@ export default function TopBar(props) {
               ></Image>
           </View>
         </Pressable>
-        <TitleText>{user}</TitleText>
+        <TitleText>{userName}</TitleText>
       </View>
       <View style={{alignItems: 'flex-end', width: '20%'}}>
         <NotificationsButton notif={notif} />
