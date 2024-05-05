@@ -92,7 +92,6 @@ export default function SignIn({route, navigation}) {
                 textAlign: 'center', 
                 display: error ? 'block' : 'none',
               }} 
-              onPress={handleSignUp}
               >
               El correo o contraseña ingresados son inválidos.
             </NormalText>
