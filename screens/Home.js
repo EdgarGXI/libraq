@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import Svg, { G, Path } from 'react-native-svg';
 
+import { useAuth } from '../Auth';
 import BookSale from '../components/BookSale';
 import TopBar from '../components/TopBar';
 import { TitleText } from '../components/FontSizing';
@@ -16,15 +17,14 @@ import BottomNavBar from '../components/BottomNavBar';
 // estadísticas solo aparecen si ventas del usuario > 0? o que aparezcan igualmente? idk
 //añadir filtros?
 
-export default function Home({ route, navigation }) {
-  const { user } = route.params;
-  // user.id contiene el accountid
+export default function Home() {
+  const { userName, userToken } = useAuth().state;
   
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{width: '100%', flex: 1}}>
 
-        <TopBar user={user.name} />
+        <TopBar user={userName} />
           
         <ScrollView style={{width: '90%', alignSelf: 'center'}}>
           <SimpleInput 
