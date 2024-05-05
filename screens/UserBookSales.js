@@ -17,41 +17,40 @@ export default function UserBookSales({route, navigation}) {
 
         <TopBar user="TomCherry" />
         
-        <ScrollView style={{alignItems: 'center', marginBottom: 40}}>
-          <View style={{alignItems: 'center', gap: 20, width: '90%'}}>
-            <PurpleButton 
-              title="Agregar" 
-              style={{marginTop: 10}} 
-              onPress={() => navigation.navigate('Crear venta nueva')}
-            />
+        <ScrollView contentContainerStyle={{ alignItems: 'center', marginBottom: 40 }}>
+            <View style={{ alignItems: 'center', gap: 20, width: '90%' }}>
+              <PurpleButton 
+                title="Agregar" 
+                style={{ marginTop: 10 }} 
+                onPress={() => navigation.navigate('Crear venta nueva')}
+              />
 
-            <BookSale 
-              id="" 
-              title="La Cadena de Hierro" 
-              author="Cassandra Clare" 
-              editorial="Destino" 
-              year="2024" 
-              cover="Blanda" 
-              price={20000} 
-              status="VENTA ACTIVA" 
-              date="24/12/2025"
-            />
+              <BookSale 
+                id="" 
+                title="La Cadena de Hierro" 
+                author="Cassandra Clare" 
+                editorial="Destino" 
+                year="2024" 
+                cover="Blanda" 
+                price={20000} 
+                status="VENTA ACTIVA" 
+                date="24/12/2025"
+              />
 
-            <BookSale 
-              id="" 
-              title="La Cadena de Hierro" 
-              author="Cassandra Clare" 
-              editorial="Destino" 
-              year="2024" 
-              cover="Blanda" 
-              price={20000} 
-              status="VENTA ACTIVA" 
-              date="24/12/2025"
-            />
+              <BookSale 
+                id="" 
+                title="La Cadena de Hierro" 
+                author="Cassandra Clare" 
+                editorial="Destino" 
+                year="2024" 
+                cover="Blanda" 
+                price={20000} 
+                status="VENTA ACTIVA" 
+                date="24/12/2025"
+              />
+            </View>
+          </ScrollView>
 
-          </View>
-        </ScrollView>
-        
       </SafeAreaView>
       <BottomNavBar ventasActive={true} />
     </View>

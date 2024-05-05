@@ -12,37 +12,38 @@ import BottomNavBar from '../components/BottomNavBar';
 export default function UserBookOffers() {
   return (
     <View style={styles.view0}>
-      <SafeAreaView style={{width: '100%', flex: 1}}>
+      <SafeAreaView style={{ width: '100%', flex: 1 }}>
 
         <TopBar user="TomCherry" />
-        
-         <ScrollView style={{alignItems: 'center'}}>
-          <View style={{alignItems: 'center', gap: 20, width: '90%'}}>
-            <BookSale 
-              id="" 
-              title="La Cadena de Hierro" 
-              author="Cassandra Clare" 
-              editorial="Destino" 
-              year="2024" 
-              cover="Blanda" 
-              price={20000} 
-              status="PEDIDO PENDIENTE" 
+
+        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', gap: 20, width: '90%' }}>
+            <BookSale
+              id=""
+              title="La Cadena de Hierro"
+              author="Cassandra Clare"
+              editorial="Destino"
+              year="2024"
+              cover="Blanda"
+              price={20000}
+              status="PEDIDO PENDIENTE"
               date="24/12/2025"
             />
-            <BookSale 
-              id="" 
-              title="La Cadena de Hierro" 
-              author="Cassandra Clare" 
-              editorial="Destino" 
-              year="2024" 
-              cover="Blanda" 
-              price={20000} 
-              status="PEDIDO RECHAZADO" 
+            <BookSale
+              id=""
+              title="La Cadena de Hierro"
+              author="Cassandra Clare"
+              editorial="Destino"
+              year="2024"
+              cover="Blanda"
+              price={20000}
+              status="PEDIDO RECHAZADO"
               date="24/12/2025"
             />
           </View>
         </ScrollView>
-                
+
+
       </SafeAreaView>
       <BottomNavBar pedidosActive={true} />
     </View>
