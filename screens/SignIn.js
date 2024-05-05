@@ -15,11 +15,9 @@ export default function SignIn({route, navigation}) {
   
   const handleLogIn = async () => {
     try { // try to sign in with creds
-      auth.signIn({ email: email, password: password });
-      console.log("signed in");
+      await auth.signIn({ email: email, password: password });
     } catch (e) { // on error, show error message
       setErrorVisible(true);
-      console.log(e);
     }
   };
   const handleSignUp = () => {
