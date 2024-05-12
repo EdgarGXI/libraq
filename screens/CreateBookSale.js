@@ -10,6 +10,7 @@ import SimpleInput from '../components/SimpleInput';
 import { NormalText } from '../components/FontSizing';
 import { insertRow, insertRowReturn } from '../db';
 import { useAuth } from '../Auth';
+import { genreList } from '../constants/theme';
 
 function checkInputValid(data) {
   for (var item in data) {
@@ -264,7 +265,6 @@ const styles = StyleSheet.create({
   },
   multiSelectBackdrop: {
     backgroundColor: 'rgba(204,204,204,0.6)',
-    borderRadius: 30,
     borderRadius: 30,
   },
   multiSelectBox: {
