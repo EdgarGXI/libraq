@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
   multiSelectBackdrop: {
     backgroundColor: 'rgba(204,204,204,0.6)',
     borderRadius: 30,
+    borderRadius: 30,
   },
   multiSelectBox: {
     borderWidth: 1,
