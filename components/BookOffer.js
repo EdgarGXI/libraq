@@ -5,21 +5,15 @@ import { useNavigation } from '@react-navigation/native';
 import { NormalText, MiniText } from './FontSizing';
 import { Colors } from '../constants/theme';
 
-/* para links de internet 
-source={{
-  uri: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b2f5a5f919149d509ca26f69547e2440d68f050dba0cc1e2d06d448d246b1c7a?'
-}}*/
-export default function BookSale(props) {
+export default function BookOffer(props) {
   const {
     title, 
     author, 
-    editorial, 
-    year, 
-    cover, 
-    price, 
-    statusShow, 
-    statusPurchase, 
-    id, 
+    statusShow, // bookoffer
+    id, // booksale
+    idOffer, // bookoffer
+    offerer,
+    deliveryaddress,
     date,
   } = props;
   
@@ -27,7 +21,7 @@ export default function BookSale(props) {
 
   //Este handle va a cambiar cuando toque hacer las verificaciones y eso, de ultimo se manda al home.
   const viewDetails = () => {
-    navigation.navigate('Detalles de venta', {booksaleid: id});
+    navigation.navigate('Detalles de venta', {booksaleid: id, bookofferid: idOffer});
   };
 
   return(
@@ -51,9 +45,8 @@ export default function BookSale(props) {
         <MiniText style={{ color: Colors.gray }}>{date}</MiniText>
         <NormalText style={{ fontWeight: 700 }}>{title}</NormalText>
         <NormalText style={{ paddingBottom: 8, color: Colors.gray }}>{author}</NormalText>
-        <NormalText style={{ color: Colors.gray }}>{editorial}, {year}</NormalText>
-        <NormalText style={{ color: Colors.gray }}>Tapa {cover}</NormalText>
-        <NormalText style={{ color: '#CB0C9F', paddingBottom: 8, fontWeight: 600 }}>${price}</NormalText>
+        <NormalText style={{ color: Colors.gray }}>Pedido por: {offerer}</NormalText>
+        <NormalText style={{ color: Colors.gray, paddingBottom: 8 }}>{deliveryaddress}</NormalText>
         <NormalText 
           style={{
             backgroundColor: '#0b0', 

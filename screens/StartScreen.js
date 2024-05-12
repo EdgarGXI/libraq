@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 
@@ -34,12 +34,12 @@ export default function StartScreen() {
       <View style={{ justifyContent: 'center', alignItems: 'center', gap: 20 }}>
         <View style={{ height: '75%', width: '100%', alignItems: 'center' }}>
           <Image
-            resizeMode="contain"
+            resizeMode='contain'
             source={require('../assets/images/startscreen.png')}
             style={styles.image}
           />
         </View>
-        <WhiteButton title="Comenzar →" fontSize={20} onPress={handleSignIn} />
+        <WhiteButton title='Comenzar →' fontSize={20} onPress={handleSignIn} />
       </View>
     </View>
   );

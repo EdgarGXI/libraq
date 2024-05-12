@@ -1,15 +1,33 @@
 import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import { insertRow } from '../db';
+import { useAuth } from '../Auth';
+import { fetchByColumn, upsertRow } from '../db';
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import { TitleText, NormalText } from '../components/FontSizing';
+import { isAlpha, isAlphaNumeric } from '../utils/InputValidation';
 
-// la idea es que los datos del profile edit estén rellenados previamente con los reales. hay que hacer fetch o algo
+function checkInputValid(data) {
+  for (var item in data) {
+    let input = data[item];
+    if (typeof(input) == 'string') input = input.trim();
+    if (['postcode', 'password'].includes(item)) { // can be alphanumeric
+      if (input == '' || !isAlphaNumeric(input)) throw "not alphanum.";
+    } else if (item === 'email') {  // valid email
+      if (input == '' || !input.substring(0, input.length-1).includes('@')) throw "not an email.";
+    } else if (item == 'address') {
+      if (input == '') throw "empty address";
+    } else if ((input == '' || !isAlpha(input)) && item != 'bio') {  // can only be alpha
+      throw "not alpha.";
+    } 
+  }
+}
+
 export default function Profile({ route, navigation }) {
   const { editMode, valueEmail="", valuePass="" } = route.params;
-
+  const auth = useAuth();
+  const [error, setErrorVisible] = useState(false);
   const [data, setFormData] = useState({
     'name': '',
     'lastname': '',
@@ -21,43 +39,83 @@ export default function Profile({ route, navigation }) {
     'postcode': null,
     'address': '',
   });
-  
+
+  // fetches stored user data and pre-fills inputs
+  useEffect(() => {
+    const getStoredData = async() => {
+      let storedData = await fetchByColumn('account', 'accountid', auth.state.userToken);
+      storedData = storedData[0];
+      for (var item in data) {
+        handleChange(item, storedData[item]);
+      }
+    };
+    getStoredData();
+  }, []);
   const handleChange = (id, text) => {
     setFormData( data => ({
       ...data, [id]: text
     }));
   }
-  
-  var buttonTitle, action, editableBool; 
-  if (editMode === true) {
+
+  // editable inputs and button function change depending on editMode
+  let buttonTitle, action, editableBool; 
+  if (editMode === true) {  
+    // all inputs are editable; button overwrites previous user data
     buttonTitle = "Guardar";
-    editableBool = [true,true]; //editable all permite que se editen todos
-    // en este caso debería hacerse un fetch con la info para los default values y cambiar con:
-    // setFormData()
-  } else if (editMode === "x") {
+    editableBool = [true,true]; 
+    action = async () => {
+      try {
+        checkInputValid(data);
+        await upsertRow(
+          'account', 
+          {
+            accountid: auth.state.userToken,
+            name: data["name"].trim(),
+            lastname: data["lastname"].trim(),
+            email: data["email"].trim(),
+            password: data["password"],
+            bio: data["bio"],
+            dpt: data["dpt"].trim(),
+            city: data["city"].trim(),
+            postcode: data["postcode"],
+            address: data["address"].trim(),
+          }
+        );
+        navigation.navigate('Home');
+      } catch (e) {
+        console.log(e);
+        setErrorVisible(true);
+      }
+    }
+  } else if (editMode === "x") {  
+    // all inputs but password and email are editable; button saves changes
     buttonTitle = "Guardar";
     editableBool = [true,false];
-    action = async () => insertRow({
-      table: 'account',
-      row: {
-        name: data["name"],
-        lastname: data["lastname"],
-        email: data["email"],
-        password: data["password"],
-        bio: data["bio"],
-        dpt: data["dpt"],
-        city: data["city"],
-        postcode: data["postcode"],
-        address: data["address"],
-      },
-      onSuccess: () => {
-        navigation.navigate('Home');
-      },
-    })
+    action = async () => {
+      // if input data is valid try signing up
+      try {
+        checkInputValid(data);
+        await auth.signUp({
+          name: data["name"].trim(),
+          lastname: data["lastname"].trim(),
+          email: data["email"].trim(),
+          password: data["password"],
+          bio: data["bio"],
+          dpt: data["dpt"].trim(),
+          city: data["city"].trim(),
+          postcode: data["postcode"],
+          address: data["address"].trim(),
+        })
+      } catch (e) {
+        console.log(e);
+        setErrorVisible(true);
+      }
+    }
   } else {
+    // no inputs are editable; button switches to editMode
     buttonTitle = "Editar";
     editableBool = [false,false];
-    action = () => navigation.navigate('Perfil', {editMode: true});  // Pasa a modo edición
+    action = () => navigation.navigate('Perfil', {editMode: true});
   } 
 
   return (
@@ -91,14 +149,20 @@ export default function Profile({ route, navigation }) {
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
                   defaultValue={data["name"]}
-                  onChangeText={newText => handleChange("name", newText)}
+                  onChangeText={newText => {
+                    handleChange("name", newText);
+                    setErrorVisible(false);
+                  }}
                 />
                 <SimpleInput 
                   placeholder="Apellido"
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
                   defaultValue={data["lastname"]}
-                  onChangeText={newText => handleChange("lastname", newText)}
+                  onChangeText={newText => {
+                    handleChange("lastname", newText);
+                    setErrorVisible(false);
+                  }}
                 />
               </View>
 
@@ -107,7 +171,10 @@ export default function Profile({ route, navigation }) {
                 inputMode="email"
                 editable={editableBool[1]}
                 defaultValue={data["email"]}
-                onChangeText={newText => handleChange("email", newText)}
+                onChangeText={newText => {
+                  handleChange("email", newText);
+                  setErrorVisible(false);
+                }}
               />
               
               <SimpleInput 
@@ -116,7 +183,10 @@ export default function Profile({ route, navigation }) {
                 editable={editableBool[1]}
                 defaultValue={data["password"]}
                 styleInput={{width: '100%'}}
-                onChangeText={newText => handleChange("password", newText)}
+                onChangeText={newText => {
+                  handleChange("password", newText);
+                  setErrorVisible(false);
+                }}
               />
 
               <TouchableOpacity>
@@ -133,14 +203,20 @@ export default function Profile({ route, navigation }) {
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
                   defaultValue={data["dpt"]}
-                  onChangeText={newText => handleChange("dpt", newText)}
+                  onChangeText={newText => {
+                    handleChange("dpt", newText);
+                    setErrorVisible(false);
+                  }}
                 />
                 <SimpleInput 
                   placeholder="Ciudad"
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
                   defaultValue={data["city"]}
-                  onChangeText={newText => handleChange("city", newText)}
+                  onChangeText={newText => {
+                    handleChange("city", newText);
+                    setErrorVisible(false);
+                  }}
                 />
               </View>
 
@@ -150,15 +226,21 @@ export default function Profile({ route, navigation }) {
                   styleDiv={{width: '48%'}}
                   inputMode="numeric"
                   editable={editableBool[0]}
-                  defaultValue={data["postCode"]}
-                  onChangeText={newText => handleChange("postcode", newText)}
+                  defaultValue={data["postcode"]}
+                  onChangeText={newText => {
+                    handleChange("postcode", newText);
+                    setErrorVisible(false);
+                  }}
                 />
                 <SimpleInput 
                   placeholder="Dirección"
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
                   defaultValue={data["address"]}
-                  onChangeText={newText => handleChange("address", newText)}
+                  onChangeText={newText => {
+                    handleChange("address", newText);
+                    setErrorVisible(false);
+                  }}
                 />
               </View>
 
@@ -168,9 +250,24 @@ export default function Profile({ route, navigation }) {
                 numberOfLines={5}
                 editable={editableBool[0]}
                 defaultValue={data["bio"]}
-                onChangeText={newText => handleChange("bio", newText)}
+                onChangeText={newText => {
+                  handleChange("bio", newText);
+                  setErrorVisible(false);
+                }}
               />
             </View>
+
+            <NormalText 
+              style={{ 
+                color: 'red', 
+                fontWeight: 700, 
+                alignSelf: 'center', 
+                textAlign: 'center', 
+                display: error ? 'block' : 'none',
+              }} 
+              >
+              Ha ocurrido un error. Asegúrate de que todos los campos hayan sido llenados correctamente.
+            </NormalText>
 
             <PurpleButton title={buttonTitle} onPress={action} />
           </View>
@@ -214,4 +311,3 @@ const styles = StyleSheet.create({
     aspectRatio: 1
   },
 });
-

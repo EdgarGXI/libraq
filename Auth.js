@@ -1,17 +1,14 @@
 import * as SecureStore from 'expo-secure-store';
-import { useContext, createContext, useReducer } from 'react';
+import { useEffect, useContext, createContext, useReducer } from 'react';
 import { AsyncStorage } from 'react-native';
 
-import { fetchByColumn } from './db';
+import { fetchByColumn, insertRow } from './db';
 
 export const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(
     (prevState, action) => {
-      console.log("\ncalled dispatch:")
-      console.log(action);
-      console.log(prevState);
       switch (action.type) {
         case 'RESTORE_TOKEN':
           return {
@@ -44,34 +41,44 @@ export const AuthProvider = ({ children }) => {
     }
   );
 
-  const signIn = async (data) => { // In a production app, we need to send some data (usually username, password) to server and get a token
-    const { password, email } = data;
+  const signIn = async (email, password) => { 
     // fetches account data for email if it exists
-    let acc = await fetchByColumn({
-      table: 'account', 
-      column: 'email', 
-      value: email,
-    });
+    let acc = await fetchByColumn('account', 'email', email);
     // if email is already in use => check if password matches
-    if (acc.length>0 && (password === acc[0]["password"])) {
+    if (acc.length>0 && (password === acc[0]['password'])) {
       try {
         userToken = await SecureStore.setItemAsync('userToken', acc[0]['accountid'].toString());
         userName = await SecureStore.setItemAsync('userName', acc[0]['name']);
       } catch (e) {
         console.log(e);
-        console.log("(setting tokens failed)")
+        console.log('(setting tokens failed)')
       }
       dispatch({ type: 'SIGN_IN', token: acc[0]['accountid'], name: acc[0]['name'] }); // sign user in --> auto navigate home
     } else { // else: error: email or password incorrect
-      throw "Email or password incorrect";
+      throw 'Email or password incorrect';
     }
   }
   
   const signOut = () => dispatch({ type: 'SIGN_OUT' });
 
-  const signUp = async () => {
-    dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-  };
+  const signUp = async (userData) => {
+    await insertRow(
+      'account',
+      {
+        name: userData['name'],
+        lastname: userData['lastname'],
+        email: userData['email'],
+        password: userData['password'],
+        bio: userData['bio'],
+        dpt: userData['dpt'],
+        city: userData['city'],
+        postcode: userData['postcode'],
+        address: userData['address'],
+      },
+    );
+    let acc = await fetchByColumn('account', 'email', userData['email']);
+    dispatch({ type: 'SIGN_IN', token: acc[0]['accountid'], name: acc[0]['name']}); // sign user in --> auto navigate home
+  }
 
   return (
     <AuthContext.Provider
