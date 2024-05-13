@@ -10,6 +10,19 @@ export async function fetchAll(table) {
   }
 }
 
+export async function deleteRow(table, column, value) {
+  try {
+    const { error } = await supabase
+      .from(table)
+      .delete()
+      .eq(column, value);
+    if (error) throw error;
+  } catch (error) {
+    console.log('Error', error)
+    throw error;
+  }
+}
+
 export async function insertRow(table, row) {
   try {
     const { status, error } = await supabase.from(table).insert(row);
@@ -81,7 +94,11 @@ export async function getSellerStats(userid) {
       revenue: data.length > 0 ? data.map(i => i.price).reduce((a, b) => a + b) : 0,
     })
   } catch (e) {
-    throw e;
+    return ({
+      published: 0,
+      sold: 0,
+      revenue: 0,
+    })
   }
 }
 
@@ -108,6 +125,7 @@ export async function fetchBookOffersByUser(userid) {
     if (error) throw error;
     return data;
   } catch (error) {
+    console.log(error)
     return [];
   }
 }
@@ -199,5 +217,18 @@ export async function uncheckedOffers(userid) {
     return data.length;
   } catch (error) {
     return 0;
+  }
+}
+
+export async function changeOfferStatus(id, newStatus) {
+  try { 
+    const { error } = await supabase
+      .from('bookoffer')
+      .update({ status: newStatus })
+      .eq('bookofferid', id);
+    if (error) throw error;
+  } catch (error) {
+    console.log('Error', error)
+    throw error;
   }
 }
