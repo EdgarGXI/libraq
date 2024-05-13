@@ -36,7 +36,7 @@ export default function UserBookOffers() {
             author={item.booksale.author}
             statusShow={'PEDIDO '+item.status}
             date={format(new Date(item.date), 'PP', {locale: es})}
-            offerer={item.account.name}
+            offerer={item.account}
             deliveryaddress={item.deliveryaddress}
             //image={item.image}
           />
@@ -60,7 +60,7 @@ export default function UserBookOffers() {
             author={item.author}
             statusShow={'PEDIDO '+item.bookoffer[j].status}
             date={format(new Date(item.bookoffer[j].date), 'PP', {locale: es})}
-            offerer={item.bookoffer[j].account.name}
+            offerer={item.bookoffer[j].account}
             deliveryaddress={item.bookoffer[j].deliveryaddress}
             //image={item.image}
           />
