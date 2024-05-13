@@ -1,9 +1,10 @@
-//import React from 'react';
 import { View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { NormalText, MiniText } from './FontSizing';
-import { Colors } from '../constants/theme';
+import { Colors, Icons } from '../constants/theme';
+import { changeOfferStatus, deleteRow } from '../db';
+import { useAuth } from '../Auth';
 
 export default function BookOffer(props) {
   const {
@@ -16,16 +17,35 @@ export default function BookOffer(props) {
     deliveryaddress,
     date,
   } = props;
+  const currUserID = useAuth().state.userToken;
   
   const navigation = useNavigation();
 
-  //Este handle va a cambiar cuando toque hacer las verificaciones y eso, de ultimo se manda al home.
   const viewDetails = () => {
     navigation.navigate('Detalles de venta', {booksaleid: id, bookofferid: idOffer});
   };
 
+  const handleReject = async () => {
+    await changeOfferStatus(idOffer, 'RECHAZADO');
+    navigation.navigate('Home');
+    viewDetails();
+  }
+
+  const handleAccept = async () => {
+    await changeOfferStatus(idOffer, 'ACEPTADO');
+    navigation.navigate('Home');
+    viewDetails();
+  }
+
+  const handleDeleteOffer = async () => {
+    if (currUserID === offerer.accountid) {
+      await deleteRow('bookoffer', 'bookofferid', idOffer);
+      navigation.navigate('Detalles de venta', {booksaleid: id});
+    }
+  }
+  
   return(
-    <Pressable 
+    <View 
       style={{
         flexDirection: 'row', 
         width: '100%', 
@@ -34,18 +54,57 @@ export default function BookOffer(props) {
       }} 
       onPress={viewDetails}
     >
-      <View style={{ width: '35%', aspectRatio: 0.7 }}>
+      <Pressable style={{ width: '35%', aspectRatio: 0.7 }}>
         <Image 
           style={{ width: null, height: null, flex: 1 }}
           resizeMode='stretch'
           source={require('../assets/images/coverdefault.png')}
         />
-      </View>
+      </Pressable>
       <View style={{ width: '60%' }}>
-        <MiniText style={{ color: Colors.gray }}>{date}</MiniText>
-        <NormalText style={{ fontWeight: 700 }}>{title}</NormalText>
-        <NormalText style={{ paddingBottom: 8, color: Colors.gray }}>{author}</NormalText>
-        <NormalText style={{ color: Colors.gray }}>Pedido por: {offerer}</NormalText>
+        <View style={{ paddingBottom: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ flexShrink: 1 }}>
+            <MiniText style={{ color: Colors.gray }}>{date}</MiniText>
+            <NormalText style={{ fontWeight: 700 }}>{title}</NormalText>
+            <NormalText style={{ color: Colors.gray }}>{author}</NormalText>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'end' }}>
+            { currUserID === offerer.accountid ? (
+              <Pressable 
+                style={{ width: 30, height: 30 }} 
+                onPress={handleDeleteOffer}
+              >
+                {Icons.bin(Colors.accent)}
+              </Pressable>
+            ) : (
+              <>
+              { statusShow != 'PEDIDO ACEPTADO' && statusShow != 'PEDIDO RECHAZADO' ? (
+                <>
+                  <Pressable 
+                    style={{ width: 30, height: 30 }} 
+                    onPress={handleReject}
+                  >
+                    {Icons.close(Colors.accent)}
+                  </Pressable>
+                  <Pressable 
+                    style={{ width: 30, height: 30 }}
+                    onPress={handleAccept}
+                  >
+                    {Icons.check(Colors.accent)}
+                  </Pressable>
+                </>
+              ) : (
+                <View 
+                  style={{ width: 30, height: 30 }}
+                >
+                  {statusShow != 'PEDIDO RECHAZADO' ? Icons.check(Colors.accent) :  Icons.close(Colors.accent)}
+                </View>
+              )}
+              </>
+            )}
+          </View>
+        </View>
+        <NormalText style={{ color: Colors.gray }}>Pedido por: {offerer.name}</NormalText>
         <NormalText style={{ color: Colors.gray, paddingBottom: 8 }}>{deliveryaddress}</NormalText>
         <NormalText 
           style={{
@@ -60,6 +119,6 @@ export default function BookOffer(props) {
           {statusShow}
         </NormalText>
       </View>
-    </Pressable>
+    </View>
   );
 }
