@@ -4,13 +4,13 @@ import * as ImagePicker from 'expo-image-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { format } from 'date-fns';
+import { decode } from 'base64-arraybuffer';
 
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import { NormalText } from '../components/FontSizing';
-import { insertRow, insertRowReturn } from '../db';
+import { insertRow, insertRowReturn, uploadFile } from '../db';
 import { useAuth } from '../Auth';
-import { genreList } from '../constants/theme';
 
 function checkInputValid(data) {
   for (var item in data) {
@@ -36,13 +36,10 @@ export default function CreateBookSale({route, navigation}) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [6, 10],
+      base64: true,
+      includeBase64: true,
     });
-
-    if (!result.canceled) {
-      setImage({uri: result.assets[0].uri});
-    } else {
-      setImage(require('../assets/images/coverdefault.png'));
-    }
+    if (!result.canceled) setImage(result.assets[0].base64);
   };
 
   const [selectedItems, setSelectedItems] = useState([]);
@@ -96,13 +93,14 @@ export default function CreateBookSale({route, navigation}) {
           damaged: selectedItems.includes('Dañado') ? true : false,
           status: 'ACTIVA',
           date: format(new Date(), 'yyyy-MM-dd'),
-          //image: ,
+          img: image,
         },
       )
       if (newRow == null) throw "err";
       for (var i in selectedItemsGenre) {
         await insertRow('bookgenre', {booksaleid: newRow.booksaleid, genre: selectedItemsGenre[i]});
       }
+      await uploadFile('book_covers', newRow.booksaleid.toString(), decode(image));
       navigation.navigate('Ventas');
     } catch (e) {
       console.log(e)
@@ -177,7 +175,7 @@ export default function CreateBookSale({route, navigation}) {
             <View style={{ width: 210, backgroundColor: '#ccc', marginVertical: 20, height: 300 }}>
               <Image 
                 resizeMode='contain'
-                source={image} 
+                source={{uri: 'data:image/jpeg;base64,'+image}}
                 style={{ flex: 1, width: null, height: null }} 
               />
             </View>
