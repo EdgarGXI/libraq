@@ -1,32 +1,36 @@
-import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import { decode } from 'base64-arraybuffer';
 
 import { useAuth } from '../Auth';
-import { fetchByColumn, upsertRow } from '../db';
+import { fetchByColumn, upsertRow, uploadFile, fetchImage } from '../db';
 import { PurpleButton } from '../components/Buttons';
 import SimpleInput from '../components/SimpleInput';
 import { TitleText, NormalText } from '../components/FontSizing';
 import { isAlpha, isAlphaNumeric } from '../utils/InputValidation';
+import { Colors } from '../constants/theme';
 
 function checkInputValid(data) {
   for (var item in data) {
     let input = data[item];
     if (typeof(input) == 'string') input = input.trim();
     if (['postcode', 'password'].includes(item)) { // can be alphanumeric
-      if (input == '' || !isAlphaNumeric(input)) throw "not alphanum.";
+      if (input == '' || !isAlphaNumeric(input)) throw 'not alphanum.';
     } else if (item === 'email') {  // valid email
-      if (input == '' || !input.substring(0, input.length-1).includes('@')) throw "not an email.";
+      if (input == '' || !input.substring(0, input.length-1).includes('@')) throw 'not an email.';
     } else if (item == 'address') {
-      if (input == '') throw "empty address";
+      if (input == '') throw 'empty address';
     } else if ((input == '' || !isAlpha(input)) && item != 'bio') {  // can only be alpha
-      throw "not alpha.";
+      throw 'not alpha.';
     } 
   }
 }
 
 export default function Profile({ route, navigation }) {
-  const { editMode, valueEmail="", valuePass="" } = route.params;
+  const { editMode, valueEmail='', valuePass='' } = route.params;
   const auth = useAuth();
+  const userToken = auth.state.userToken;
   const [error, setErrorVisible] = useState(false);
   const [data, setFormData] = useState({
     'name': '',
@@ -39,18 +43,35 @@ export default function Profile({ route, navigation }) {
     'postcode': null,
     'address': '',
   });
+  const [image, setImage] = useState(null);
+  const [source, setSource] = useState(null);
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [1, 1],
+      base64: true,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].base64);
+      setSource('data:image/jpeg;base64,'+result.assets[0].base64);
+    }
+  };
 
   // fetches stored user data and pre-fills inputs
   useEffect(() => {
     const getStoredData = async() => {
-      let storedData = await fetchByColumn('account', 'accountid', auth.state.userToken);
+      let storedData = await fetchByColumn('account', 'accountid', userToken);
       storedData = storedData[0];
       for (var item in data) {
         handleChange(item, storedData[item]);
       }
+      let imgLink = await fetchImage('avatars', storedData.email);
+      if (imgLink !== null) {
+        setSource(imgLink);
+      }
     };
     getStoredData();
-  }, []);
+  }, [userToken, setSource]);
   const handleChange = (id, text) => {
     setFormData( data => ({
       ...data, [id]: text
@@ -61,7 +82,7 @@ export default function Profile({ route, navigation }) {
   let buttonTitle, action, editableBool; 
   if (editMode === true) {  
     // all inputs are editable; button overwrites previous user data
-    buttonTitle = "Guardar";
+    buttonTitle = 'Guardar';
     editableBool = [true,true]; 
     action = async () => {
       try {
@@ -70,59 +91,65 @@ export default function Profile({ route, navigation }) {
           'account', 
           {
             accountid: auth.state.userToken,
-            name: data["name"].trim(),
-            lastname: data["lastname"].trim(),
-            email: data["email"].trim(),
-            password: data["password"],
-            bio: data["bio"],
-            dpt: data["dpt"].trim(),
-            city: data["city"].trim(),
-            postcode: data["postcode"],
-            address: data["address"].trim(),
+            name: data['name'].trim(),
+            lastname: data['lastname'].trim(),
+            email: data['email'].trim(),
+            password: data['password'],
+            bio: data['bio'],
+            dpt: data['dpt'].trim(),
+            city: data['city'].trim(),
+            postcode: data['postcode'],
+            address: data['address'].trim(),
           }
         );
+        if (image != null) {
+          // try inserting image
+          await uploadFile('avatars', data['email'].trim(), decode(image));
+        }
         navigation.navigate('Home');
       } catch (e) {
-        console.log(e);
         setErrorVisible(true);
       }
     }
-  } else if (editMode === "x") {  
+  } else if (editMode === 'x') {  
     // all inputs but password and email are editable; button saves changes
-    buttonTitle = "Guardar";
+    buttonTitle = 'Guardar';
     editableBool = [true,false];
     action = async () => {
       // if input data is valid try signing up
       try {
         checkInputValid(data);
         await auth.signUp({
-          name: data["name"].trim(),
-          lastname: data["lastname"].trim(),
-          email: data["email"].trim(),
-          password: data["password"],
-          bio: data["bio"],
-          dpt: data["dpt"].trim(),
-          city: data["city"].trim(),
-          postcode: data["postcode"],
-          address: data["address"].trim(),
+          name: data['name'].trim(),
+          lastname: data['lastname'].trim(),
+          email: data['email'].trim(),
+          password: data['password'],
+          bio: data['bio'],
+          dpt: data['dpt'].trim(),
+          city: data['city'].trim(),
+          postcode: data['postcode'],
+          address: data['address'].trim(),
         })
+        if (image != null) {
+          // try inserting image
+          await uploadFile('avatars', data['email'].trim(), decode(image));
+        }
       } catch (e) {
-        console.log(e);
         setErrorVisible(true);
       }
     }
   } else {
     // no inputs are editable; button switches to editMode
-    buttonTitle = "Editar";
+    buttonTitle = 'Editar';
     editableBool = [false,false];
     action = () => navigation.navigate('Perfil', {editMode: true});
   } 
-
+  
   return (
     <View style={styles.view0}>
       <Image
-          resizeMode="stretch"
-          source={require("../assets/images/bg-register.png")}
+          resizeMode='stretch'
+          source={require('../assets/images/bg-register.jpg')}
           style={styles.image1}
       >
       </Image>
@@ -131,127 +158,141 @@ export default function Profile({ route, navigation }) {
         <View style={styles.view1}>
           <View style={styles.view2}>
 
-            <View style={{borderRadius: 100, aspectRatio: 1, width: 150, overflow: 'hidden', marginTop: '-30%', alignSelf: 'center', marginBottom: 20}}>
+            <TouchableOpacity 
+              style={{
+                borderRadius: 100, 
+                aspectRatio: 1, 
+                width: 150, 
+                overflow: 'hidden', 
+                marginTop: '-30%', 
+                alignSelf: 'center', 
+                marginBottom: 20, 
+                backgroundColor: Colors.dark_gray
+              }}
+              onPress={editableBool[0] ? pickImage : ()=>{}}
+            >
               <Image
-                resizeMode="stretch"
-                source={require('../assets/images/avatar.png')}
-                style={{flex: 1, width: null, height: null, aspectRatio: 1}}
+                resizeMode='stretch'
+                source={{ uri: source }}
+                style={{ flex: 1, width: null, height: null, aspectRatio: 1 }}
               />
-            </View>
+            </TouchableOpacity>
 
             <TitleText>Información</TitleText>
             
-            <View style={{gap: 20, paddingVertical: 20}}>
+            <View style={{ gap: 20, paddingVertical: 20 }}>
 
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <SimpleInput 
-                  placeholder="Nombre"
-                  styleDiv={{width: '48%'}}
+                  placeholder='Nombre'
+                  styleDiv={{ width: '48%'}}
                   editable={editableBool[0]}
-                  defaultValue={data["name"]}
+                  defaultValue={data['name']}
                   onChangeText={newText => {
-                    handleChange("name", newText);
+                    handleChange('name', newText);
                     setErrorVisible(false);
                   }}
                 />
                 <SimpleInput 
-                  placeholder="Apellido"
-                  styleDiv={{width: '48%'}}
+                  placeholder='Apellido'
+                  styleDiv={{ width: '48%' }}
                   editable={editableBool[0]}
-                  defaultValue={data["lastname"]}
+                  defaultValue={data['lastname']}
                   onChangeText={newText => {
-                    handleChange("lastname", newText);
+                    handleChange('lastname', newText);
                     setErrorVisible(false);
                   }}
                 />
               </View>
 
               <SimpleInput 
-                placeholder="Correo electrónico"
-                inputMode="email"
+                placeholder='Correo electrónico'
+                inputMode='email'
                 editable={editableBool[1]}
-                defaultValue={data["email"]}
+                defaultValue={data['email']}
+                styleInput={{ width: '100%' }}
                 onChangeText={newText => {
-                  handleChange("email", newText);
+                  handleChange('email', newText);
                   setErrorVisible(false);
                 }}
               />
               
               <SimpleInput 
-                placeholder="Contraseña" 
+                placeholder='Contraseña' 
                 secureTextEntry={true}
                 editable={editableBool[1]}
-                defaultValue={data["password"]}
-                styleInput={{width: '100%'}}
+                defaultValue={data['password']}
+                styleInput={{ width: '100%' }}
                 onChangeText={newText => {
-                  handleChange("password", newText);
+                  handleChange('password', newText);
                   setErrorVisible(false);
                 }}
               />
 
               <TouchableOpacity>
                 <NormalText 
-                  style={{color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end'}}
+                  style={{ color: '#8A19D6', fontWeight: 700, marginTop: -10, alignSelf: 'flex-end' }}
                 >
                 ¿Olvidaste tu contraseña?
                 </NormalText>
               </TouchableOpacity>
               
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <SimpleInput 
-                  placeholder="Departamento"
+                  placeholder='Departamento'
                   styleDiv={{width: '48%'}}
                   editable={editableBool[0]}
-                  defaultValue={data["dpt"]}
+                  defaultValue={data['dpt']}
                   onChangeText={newText => {
-                    handleChange("dpt", newText);
+                    handleChange('dpt', newText);
                     setErrorVisible(false);
                   }}
                 />
                 <SimpleInput 
-                  placeholder="Ciudad"
-                  styleDiv={{width: '48%'}}
+                  placeholder='Ciudad'
+                  styleDiv={{ width: '48%' }}
                   editable={editableBool[0]}
-                  defaultValue={data["city"]}
+                  defaultValue={data['city']}
                   onChangeText={newText => {
-                    handleChange("city", newText);
+                    handleChange('city', newText);
                     setErrorVisible(false);
                   }}
                 />
               </View>
 
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <SimpleInput 
-                  placeholder="Código Postal"
-                  styleDiv={{width: '48%'}}
-                  inputMode="numeric"
+                  placeholder='Código Postal'
+                  styleDiv={{ width: '48%' }}
+                  inputMode='numeric'
                   editable={editableBool[0]}
-                  defaultValue={data["postcode"]}
+                  defaultValue={data['postcode']}
                   onChangeText={newText => {
-                    handleChange("postcode", newText);
+                    handleChange('postcode', newText);
                     setErrorVisible(false);
                   }}
                 />
                 <SimpleInput 
-                  placeholder="Dirección"
-                  styleDiv={{width: '48%'}}
+                  placeholder='Dirección'
+                  styleDiv={{ width: '48%' }}
                   editable={editableBool[0]}
-                  defaultValue={data["address"]}
+                  defaultValue={data['address']}
                   onChangeText={newText => {
-                    handleChange("address", newText);
+                    handleChange('address', newText);
                     setErrorVisible(false);
                   }}
                 />
               </View>
 
               <SimpleInput 
-                placeholder="Biografía"
+                placeholder='Biografía'
                 multiline={true}
                 numberOfLines={5}
                 editable={editableBool[0]}
-                defaultValue={data["bio"]}
+                defaultValue={data['bio']}
+                styleInput={{ width: '100%' }}
                 onChangeText={newText => {
-                  handleChange("bio", newText);
+                  handleChange('bio', newText);
                   setErrorVisible(false);
                 }}
               />
@@ -306,8 +347,8 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
-    width: '100%',
+    width: '180%',
     height: 500,
-    aspectRatio: 1
+    aspectRatio: 1,
   },
 });
