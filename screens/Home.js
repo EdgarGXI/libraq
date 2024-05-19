@@ -15,14 +15,14 @@ import { TitleText } from '../components/FontSizing';
 import Stat from '../components/Stat';
 import SimpleInput from '../components/SimpleInput';
 import BottomNavBar from '../components/BottomNavBar';
-import { fetchAll, getSellerStats, insertRow } from '../db';
+import { fetchAll, getSellerStats, fetchImage } from '../db';
 import { Icons, Colors } from '../constants/theme';
 
 // estadísticas solo aparecen si ventas del usuario > 0? o que aparezcan igualmente? idk
 //añadir filtros?
 
 export default function Home() {
-  const auth = useAuth();
+  const user = useAuth().state.userToken;
   const [stats, setStats] = useState({});
   const [sales, setSalesData] = useState([]);
       
@@ -30,11 +30,12 @@ export default function Home() {
   useEffect(() => {
     const getStoredData = async() => {
       // sets seller stats
-      setStats(await getSellerStats(auth.state.userToken));
+      setStats(await getSellerStats(user));
       // fetches booksale stored data and renders as BookSale component
       let storedData = await fetchAll('booksale');
       for (let i = 0; i < storedData.length; i++) {
         let item = storedData[i];
+        let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
         setSalesData(sales => [...sales, 
           <BookSale 
             id={item.booksaleid}
@@ -46,13 +47,13 @@ export default function Home() {
             price={item.price} 
             statusShow={'VENTA '+item.status}
             date={format(new Date(item.date), 'PP', {locale: es})}
-            //image={item.image}
+            image={imgLink}
           />
         ]);
       }
     };
     getStoredData();
-  }, []);
+  }, [user]);
   
   return (
     <View style={styles.view0}>
