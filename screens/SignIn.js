@@ -29,7 +29,7 @@ export default function SignIn({route, navigation}) {
     <View style={styles.view0}>
       <Image
           resizeMode='stretch'
-          source={require('../assets/images/bg-register.png')}
+          source={require('../assets/images/bg-register.jpg')}
           style={styles.image1}
       />
       
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   image1: {
     zIndex: 0,
     overflow: 'hidden',
-    width: '100%',
+    width: '180%',
     height: 500,
     aspectRatio: 1,
   },
