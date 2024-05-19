@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { PurpleButton, WhiteButton } from '../components/Buttons';
 import { NormalText, TitleText } from '../components/FontSizing';
 import Chip from '../components/Chip';
-import { fetchBookSaleDetails, fetchAll, fetchByColumn } from '../db';
+import { fetchBookSaleDetails, fetchImage, fetchByColumn } from '../db';
 
 export default function BookSaleDetails({ route, navigation }) {
   const { booksaleid=null, bookofferid=null } = route.params;
@@ -26,6 +26,7 @@ export default function BookSaleDetails({ route, navigation }) {
       ) : (
         null
       );
+      let imgLink = await fetchImage('book_covers', booksaleid);
       setDetails({
         title: item.title,
         author: item.author,
@@ -38,7 +39,7 @@ export default function BookSaleDetails({ route, navigation }) {
         address: bookofferid !== null ? offer[0].deliveryaddress : null,
         seller: item.account,
         offerer: bookofferid !== null ? offerer[0] : null,
-        //image={item.image}
+        image: imgLink,
       });
       // set genres
       if (item.bookgenre.length > 0) {
@@ -61,7 +62,7 @@ export default function BookSaleDetails({ route, navigation }) {
       }
     };
     getStoredData();
-  }, []);
+  }, [bookofferid, booksaleid]);
   
   return (
     <View style={styles.view0}>
@@ -112,7 +113,7 @@ export default function BookSaleDetails({ route, navigation }) {
             >
               <Image 
                 resizeMode='stretch'
-                source={require('../assets/images/coverdefault.png')} 
+                source={{ uri: details.image }} 
                 style={{ flex: 1, width: null, height: null }} 
               />
             </View>
