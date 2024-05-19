@@ -16,6 +16,7 @@ export default function BookOffer(props) {
     offerer,
     deliveryaddress,
     date,
+    image,
   } = props;
   const currUserID = useAuth().state.userToken;
   
@@ -52,13 +53,12 @@ export default function BookOffer(props) {
         alignItems: 'center', 
         justifyContent: 'space-between',
       }} 
-      onPress={viewDetails}
     >
-      <Pressable style={{ width: '35%', aspectRatio: 0.7 }}>
+      <Pressable style={{ width: '35%', aspectRatio: 0.7 }} onPress={viewDetails}>
         <Image 
           style={{ width: null, height: null, flex: 1 }}
           resizeMode='stretch'
-          source={require('../assets/images/coverdefault.png')}
+          source={{ uri: image }}
         />
       </Pressable>
       <View style={{ width: '60%' }}>
