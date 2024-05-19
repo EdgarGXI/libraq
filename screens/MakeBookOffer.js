@@ -23,6 +23,7 @@ function checkInputValid(data) {
 
 export default function MakeBookOffer({route, navigation}) {
   const auth = useAuth();
+  const user = auth.state.userToken;
   const { booksaleid, setDefault=false } = route.params;
   const [error, setErrorVisible] = useState(false);
   const [data, setData] = useState({
@@ -34,13 +35,13 @@ export default function MakeBookOffer({route, navigation}) {
   // fetches stored user data and pre-fills inputs
   useEffect(() => {
     const getStoredData = async() => {
-      let storedData = await fetchUserData(auth.state.userToken, 'dpt, city, postcode, address');
+      let storedData = await fetchUserData(user, 'dpt, city, postcode, address');
       for (var item in data) {
         handleChange(item, storedData[item]);
       }
     };
     if (setDefault) getStoredData();
-  }, []);
+  }, [user, data, setDefault]);
   const handleChange = (id, text) => {
     setData( data => ({
       ...data, [id]: text
