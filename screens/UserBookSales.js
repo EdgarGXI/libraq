@@ -13,19 +13,20 @@ import BookSale from '../components/BookSale';
 import TopBar from '../components/TopBar';
 import BottomNavBar from '../components/BottomNavBar';
 import { useAuth } from '../Auth';
-import { fetchBookSalesByUser } from '../db';
+import { fetchBookSalesByUser, fetchImage } from '../db';
 
 export default function UserBookSales({route, navigation}) {
-  const auth = useAuth();
+  const user = useAuth().state.userToken;
   const [sales, setSalesData] = useState([]);
 
   // fetches stored data and pre-fills info in page
   useEffect(() => {
     const getStoredData = async() => {
       // fetches booksale stored data and renders as BookSale components
-      let storedData = await fetchBookSalesByUser(auth.state.userToken);
+      let storedData = await fetchBookSalesByUser(user);
       for (let i = 0; i < storedData.length; i++) {
         let item = storedData[i];
+        let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
         setSalesData(sales => [...sales, 
           <BookSale 
             id={item.booksaleid}
@@ -37,13 +38,13 @@ export default function UserBookSales({route, navigation}) {
             price={item.price} 
             statusShow={'VENTA '+item.status}
             date={format(new Date(item.date), 'PP', {locale: es})}
-            //image={item.image}
+            image={imgLink}
           />
         ]);
       }
     };
     getStoredData();
-  }, []);
+  }, [user]);
 
   return (
     <View style={styles.view0}>
