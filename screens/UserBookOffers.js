@@ -5,28 +5,29 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 import { useAuth } from '../Auth';
-import { fetchBookOffersByUser, fetchBookOffersForUser } from '../db';
+import { fetchBookOffersByUser, fetchBookOffersForUser, fetchImage } from '../db';
 import BookOffer from '../components/BookOffer';
 import TopBar from '../components/TopBar';
 import BottomNavBar from '../components/BottomNavBar';
 import Chip from '../components/Chip';
 
 export default function UserBookOffers() {
-  const auth = useAuth();
+  const userToken = useAuth().state.userToken;
   const [offers, setOffersData] = useState([]);
   const [styletabs, setStyletabs] = useState([styles.selected, null]);
 
-  const getOwnOffers = async() => {
+  const getOwnOffers = useCallback(async() => {
     // fetches bookoffers stored data and renders as BookSale components
-    let storedData = await fetchBookOffersByUser(auth.state.userToken);
+    let storedData = await fetchBookOffersByUser(userToken);
     setOffersData([]);
     for (let i = 0; i < storedData.length; i++) {
       let item = storedData[i];
+      let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
       if (item.booksale != null) {
         setOffersData(offers => [...offers, 
           <BookOffer 
@@ -38,19 +39,20 @@ export default function UserBookOffers() {
             date={format(new Date(item.date), 'PP', {locale: es})}
             offerer={item.account}
             deliveryaddress={item.deliveryaddress}
-            //image={item.image}
+            image={imgLink}
           />
         ]);
       }
     }
-  };
+  }, [userToken]);
 
   const getOffersForUser = async() => {
     // fetches bookoffers stored data and renders as BookSale components
-    let storedData = await fetchBookOffersForUser(auth.state.userToken);
+    let storedData = await fetchBookOffersForUser(userToken);
     setOffersData([]);
     for (let i = 0; i < storedData.length; i++) {
       let item = storedData[i];
+      let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
       for (let j = 0; j < item.bookoffer.length; j++) { 
         setOffersData(offers => [...offers, 
           <BookOffer 
@@ -62,7 +64,7 @@ export default function UserBookOffers() {
             date={format(new Date(item.bookoffer[j].date), 'PP', {locale: es})}
             offerer={item.bookoffer[j].account}
             deliveryaddress={item.bookoffer[j].deliveryaddress}
-            //image={item.image}
+            image={imgLink}
           />
         ]);
       }
@@ -72,7 +74,7 @@ export default function UserBookOffers() {
   // fetches stored data and pre-fills info in page
   useEffect(() => {
     getOwnOffers();
-  }, []);
+  }, [userToken, getOwnOffers]);
 
   const propios = async () => {
     await getOwnOffers();
