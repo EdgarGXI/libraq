@@ -6,10 +6,11 @@ import { useAuth } from '../Auth';
 import { WhiteButton } from '../components/Buttons';
 import { TitleText } from './FontSizing';
 import { Colors, Icons } from '../constants/theme';
-import { uncheckedOffers } from '../db';
+import { uncheckedOffers, getAvatar } from '../db';
 
 export default function TopBar() {
   const [notif, setNotif] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const { userName, userToken } = useAuth().state; 
   const navigation = useNavigation();
   
@@ -19,11 +20,12 @@ export default function TopBar() {
 
   useEffect(() => {
     const getNotifs = async () => {
+      setAvatar(await getAvatar(userToken));
       let newOffers = await uncheckedOffers(userToken);
       setNotif(newOffers > 0 ? true : false);
     }
     getNotifs();
-  }, []);
+  }, [userToken]);
 
   return(
     <View 
@@ -41,7 +43,7 @@ export default function TopBar() {
           <View style={{ height: '80%', aspectRatio: 1 }}>
               <Image
                 resizeMode='contain'
-                source={require('../assets/images/avatar.png')} 
+                source={{ uri: avatar }} 
                 style={{ flex: 1, width: null, height: null, aspectRatio: 1 }} 
               ></Image>
           </View>
