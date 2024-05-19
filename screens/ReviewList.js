@@ -28,14 +28,14 @@ export default function ReviewList({route}) {
             <Review 
               reviewID={1}
               accountID={222}
-              date='10-12-2025'
-              content='Soy un dinosaurio y me llamo Anacleto Por cosas del destino no morí en la glaciación Mis amigos se extinguieron, me dejaron solo Y tuve que resignarme a esta situación'
+              date='6 may 2024'
+              content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
             />
             <Review 
               reviewID={2}
               accountID={555}
-              date='10-10-2025'
-              content='Soy un dinosaurio y me llamo Anacleto Por cosas del destino no morí en la glaciación Mis amigos se extinguieron, me dejaron solo Y tuve que resignarme a esta situación'
+              date='10 oct 2023'
+              content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
             />
           </View>
         </ScrollView>
