@@ -7,21 +7,22 @@ import { useAuth } from '../Auth';
 import { WhiteButton } from '../components/Buttons';
 
 export default function StartScreen() {
-  const auth = useAuth();
+  const { dispatch } = useAuth();
+   
   useEffect(() => {
     const bootstrapAsync = async () => {
       let userToken, userName;
       try {
         userToken = await SecureStore.getItemAsync('userToken');
         userName = await SecureStore.getItemAsync('userName');
-        auth.dispatch({ type: 'RESTORE_TOKEN', token: userToken, name: userName});
+        dispatch({ type: 'RESTORE_TOKEN', token: userToken ? parseInt(userToken) : null, name: userName});
       } catch (e) {
         // Restoring token failed
-        auth.dispatch({ type: 'SIGN_OUT' });
+        dispatch({ type: 'SIGN_OUT' });
       }
     };
     bootstrapAsync();
-  }, []);
+  }, [dispatch]);
 
   const navigation = useNavigation();
 
