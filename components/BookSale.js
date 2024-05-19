@@ -1,4 +1,3 @@
-//import React from 'react';
 import { View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,6 +20,7 @@ export default function BookSale(props) {
     statusPurchase, 
     id, 
     date,
+    image,
   } = props;
   
   const navigation = useNavigation();
@@ -44,7 +44,7 @@ export default function BookSale(props) {
         <Image 
           style={{ width: null, height: null, flex: 1 }}
           resizeMode='stretch'
-          source={require('../assets/images/coverdefault.png')}
+          source={{uri: image}}
         />
       </View>
       <View style={{ width: '60%' }}>
