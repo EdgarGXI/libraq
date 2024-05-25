@@ -4,8 +4,35 @@ Open the `App.js` file to start writing some code. You can preview the changes d
 
 When you're ready to see everything that Expo provides (or if you want to use your own editor) you can **Download** your project and use it with [expo cli](https://docs.expo.dev/get-started/installation/#expo-cli)).
 
-All projects created in Snack are publicly available, so you can easily share the link to this project via link, or embed it on a web page with the `<>` button.
+# Book Buying and Selling Platform
 
-If you're having problems, you can tweet to us [@expo](https://twitter.com/expo) or ask in our [forums](https://forums.expo.dev/c/expo-dev-tools/61) or [Discord](https://chat.expo.dev/).
+## Objective
 
-Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
+The objective is to create an innovative platform dedicated to facilitating the buying and selling of new or second-hand books. Recognizing the need for many people to free up space in their homes and dispose of items they no longer need, this initiative aims to provide a virtual space where users can connect easily and safely to buy and sell used products, thus promoting the reuse of items and the circular economy.
+
+## Scope
+
+Designing and launching a C2C e-commerce system specialized in books, making it easier for residents of Barranquilla to search for and acquire new or second-hand books at affordable prices. This system will provide a virtual platform where users can explore a wide variety of books offered by other community members. Sellers can list their books for sale, specifying details such as the book's condition, price, and availability.
+
+Key benefits of this system will include the convenience of finding desired books from the comfort of home, the option to purchase books at cheaper prices compared to traditional stores, and the opportunity to discover used books in good condition that might otherwise be hard to find.
+
+## Small Plan
+
+The development of the book buying and selling application will be structured into several phases. Initially, market research was conducted to identify user needs and define key requirements. Subsequently, the interface and user experience were designed, followed by system architecture. The development phase will involve creating the Front-End and Back-End, along with integrating payment systems and essential functionalities such as user registration, book listing, and user communication.
+
+Comprehensive testing will be carried out to ensure the functionality and security of the system. The launch will include preparing marketing materials and a campaign to attract initial users, along with post-launch support. Finally, a continuous improvement strategy based on user feedback and regular updates will be implemented to optimize the performance and security of the platform.
+
+## Technologies
+
+1. **Prototype: Figma**
+   
+2. **Framework: React Native (Expo Router)**
+
+3. **Programming Language: JavaScript**
+
+4. **Graphical Interface: React**
+   
+5. **Databases: Superbase**
+
+6. **Deployment (SaaS): Google Cloud**
+   
