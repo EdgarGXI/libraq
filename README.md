@@ -16,12 +16,6 @@ Designing and launching a C2C e-commerce system specialized in books, making it 
 
 Key benefits of this system will include the convenience of finding desired books from the comfort of home, the option to purchase books at cheaper prices compared to traditional stores, and the opportunity to discover used books in good condition that might otherwise be hard to find.
 
-## Small Plan
-
-The development of the book buying and selling application will be structured into several phases. Initially, market research was conducted to identify user needs and define key requirements. Subsequently, the interface and user experience were designed, followed by system architecture. The development phase will involve creating the Front-End and Back-End, along with integrating payment systems and essential functionalities such as user registration, book listing, and user communication.
-
-Comprehensive testing will be carried out to ensure the functionality and security of the system. The launch will include preparing marketing materials and a campaign to attract initial users, along with post-launch support. Finally, a continuous improvement strategy based on user feedback and regular updates will be implemented to optimize the performance and security of the platform.
-
 ## Technologies
 
 1. `Prototype: Figma`
