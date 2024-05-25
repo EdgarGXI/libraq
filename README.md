@@ -24,15 +24,15 @@ Comprehensive testing will be carried out to ensure the functionality and securi
 
 ## Technologies
 
-1. **Prototype: Figma**
+1. `Prototype: Figma`
    
-2. **Framework: React Native (Expo Router)**
+2. `Framework: React Native (Expo Router)`
 
-3. **Programming Language: JavaScript**
+3. `Programming Language: JavaScript`
 
-4. **Graphical Interface: React**
+4. `Graphical Interface: React`
    
-5. **Databases: Superbase**
+5. `Databases: Superbase`
 
-6. **Deployment (SaaS): Google Cloud**
-   
+6. `Deployment (SaaS): Google Cloud`
+
