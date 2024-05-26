@@ -21,10 +21,10 @@ function checkInputValid(data) {
   }
 }
 
-export default function MakeBookOffer({route, navigation}) {
+export default function MakeBookOffer({ route, navigation }) {
   const auth = useAuth();
   const user = auth.state.userToken;
-  const { booksaleid, setDefault=false } = route.params;
+  const { booksaleid, setDefault = false } = route.params;
   const [error, setErrorVisible] = useState(false);
   const [data, setData] = useState({
     'dpt': '',
@@ -32,9 +32,9 @@ export default function MakeBookOffer({route, navigation}) {
     'postcode': null,
     'address': '',
   });
-  // fetches stored user data and pre-fills inputs
+
   useEffect(() => {
-    const getStoredData = async() => {
+    const getStoredData = async () => {
       let storedData = await fetchUserData(user, 'dpt, city, postcode, address');
       for (var item in data) {
         handleChange(item, storedData[item]);
@@ -42,8 +42,9 @@ export default function MakeBookOffer({route, navigation}) {
     };
     if (setDefault) getStoredData();
   }, [user, data, setDefault]);
+
   const handleChange = (id, text) => {
-    setData( data => ({
+    setData(data => ({
       ...data, [id]: text
     }));
   }
@@ -57,9 +58,9 @@ export default function MakeBookOffer({route, navigation}) {
           accountid: auth.state.userToken,
           booksaleid: booksaleid, 
           deliveryaddress: data['city'].trim()
-            +', '+data['dpt'].trim()
-            +' - '+data['address'].trim()
-            +' (Cód. '+String(data['postcode'])+')',
+            + ', ' + data['dpt'].trim()
+            + ' - ' + data['address'].trim()
+            + ' (Cód. ' + String(data['postcode']) + ')',
           status: 'PENDIENTE',
           date: format(new Date(), 'yyyy-MM-dd'),
         },
@@ -69,67 +70,67 @@ export default function MakeBookOffer({route, navigation}) {
       setErrorVisible(true);
     }
   }
-  
+
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{ width: '100%', flex: 1 }}>
         
-        <ScrollView style={{ justifyContent: 'center'}}>
+        <ScrollView contentContainerStyle={{ justifyContent: 'center' }}>
           <View style={{ alignItems: 'center', gap: 10 }}>
            
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <SimpleInput 
-                  placeholder='Departamento'
-                  styleDiv={{width: '48%'}}
-                  defaultValue={data['dpt']}
-                  onChangeText={newText => {
-                    handleChange('dpt', newText);
-                    setErrorVisible(false);
-                  }}
-                />
-                <SimpleInput 
-                  placeholder='Ciudad'
-                  styleDiv={{width: '48%'}}
-                  defaultValue={data['city']}
-                  onChangeText={newText => {
-                    handleChange('city', newText);
-                    setErrorVisible(false);
-                  }}
-                />
-              </View>
+              <SimpleInput 
+                placeholder='Departamento'
+                styleDiv={{ width: '48%' }}
+                defaultValue={data['dpt']}
+                onChangeText={newText => {
+                  handleChange('dpt', newText);
+                  setErrorVisible(false);
+                }}
+              />
+              <SimpleInput 
+                placeholder='Ciudad'
+                styleDiv={{ width: '48%' }}
+                defaultValue={data['city']}
+                onChangeText={newText => {
+                  handleChange('city', newText);
+                  setErrorVisible(false);
+                }}
+              />
+            </View>
 
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <SimpleInput 
-                  placeholder='Código Postal'
-                  styleDiv={{width: '48%'}}
-                  inputMode='numeric'
-                  defaultValue={data['postcode']}
-                  onChangeText={newText => {
-                    handleChange('postcode', newText);
-                    setErrorVisible(false);
-                  }}
-                />
-                <SimpleInput 
-                  placeholder='Dirección'
-                  styleDiv={{width: '48%'}}
-                  defaultValue={data['address']}
-                  onChangeText={newText => {
-                    handleChange('address', newText);
-                    setErrorVisible(false);
-                  }}
-                />
-              </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <SimpleInput 
+                placeholder='Código Postal'
+                styleDiv={{ width: '48%' }}
+                inputMode='numeric'
+                defaultValue={data['postcode']}
+                onChangeText={newText => {
+                  handleChange('postcode', newText);
+                  setErrorVisible(false);
+                }}
+              />
+              <SimpleInput 
+                placeholder='Dirección'
+                styleDiv={{ width: '48%' }}
+                defaultValue={data['address']}
+                onChangeText={newText => {
+                  handleChange('address', newText);
+                  setErrorVisible(false);
+                }}
+              />
+            </View>
 
             <NormalText 
               style={{ 
                 color: 'red', 
-                fontWeight: 700, 
+                fontWeight: '700', 
                 alignSelf: 'center', 
                 textAlign: 'center', 
                 display: error ? 'block' : 'none',
                 width: '80%',
               }} 
-              >
+            >
               Ha ocurrido un error. Asegúrate de que todos los campos hayan sido llenados correctamente.
             </NormalText>
             
