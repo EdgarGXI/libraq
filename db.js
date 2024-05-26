@@ -23,7 +23,7 @@ export async function insertRow(table, row) {
 export async function insertRowReturn(table, row) {
   const { data, status, error } = await supabase.from(table).insert(row).select();
   if (String(status)[0] !== '2') throw error;
-  return data[0];
+  return data !== null & data !== undefined ? data[0] : null;
 }
 
 export async function fetchByColumn(table, column, value, select=null) {
@@ -149,13 +149,13 @@ export async function fetchBookSaleDetails(booksaleid) {
     `)
     .eq('booksaleid', booksaleid)
   if (error) return null;
-  return data[0];
+  return data !== null & data !== undefined ? data[0] : null;
 }
 
 export async function fetchUserData(userid, select=null) {
   try {
     let storedData = await fetchByColumn('account', 'accountid', userid, select);
-    return storedData[0];
+    return storedData !== null & storedData !== undefined ? storedData[0] : null;
   } catch (error) {
     throw error;
   }
@@ -189,7 +189,7 @@ export async function updateImage(id, newimage) {
 
 export async function fetchImage(bucket, name) {
   const { data } = await supabase.storage.from(bucket).getPublicUrl(name);
-  return data.publicUrl;
+  return data !== null & data !== undefined ? data.publicUrl : '';
 }
 
 export async function uploadFile(bucket, path, file) {
@@ -206,7 +206,7 @@ export async function getAvatar(userid) {
   let user = await fetchByColumn('account', 'accountid', userid);
   user = user[0];
   let imgLink;
-  if (user !== null & user !== undefined){
+  if (user !== null & user !== undefined) {
     imgLink = await fetchImage('avatars', user.email);
   }
   return imgLink;
