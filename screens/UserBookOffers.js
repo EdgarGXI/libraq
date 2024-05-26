@@ -29,19 +29,17 @@ export default function UserBookOffers() {
       let item = storedData[i];
       let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
       if (item.booksale != null) {
-        setOffersData(offers => [...offers, 
-          <BookOffer 
-            id={item.booksaleid}
-            idOffer={item.bookofferid}
-            title={item.booksale.title}
-            author={item.booksale.author}
-            statusShow={'PEDIDO '+item.status}
-            date={format(new Date(item.date), 'PP', {locale: es})}
-            offerer={item.account}
-            deliveryaddress={item.deliveryaddress}
-            image={imgLink}
-          />
-        ]);
+        setOffersData(offers => [...offers, {
+          id: item.booksaleid,
+          idOffer: item.bookofferid,
+          title: item.booksale.title,
+          author: item.booksale.author,
+          statusShow: 'PEDIDO '+item.status,
+          date: format(new Date(item.date), 'PP', {locale: es}),
+          offerer: item.account,
+          deliveryaddress: item.deliveryaddress,
+          image: imgLink,
+        }]);
       }
     }
   }, [userToken]);
@@ -54,19 +52,17 @@ export default function UserBookOffers() {
       let item = storedData[i];
       let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
       for (let j = 0; j < item.bookoffer.length; j++) { 
-        setOffersData(offers => [...offers, 
-          <BookOffer 
-            id={item.booksaleid}
-            idOffer={item.bookoffer[j].bookofferid}
-            title={item.title}
-            author={item.author}
-            statusShow={'PEDIDO '+item.bookoffer[j].status}
-            date={format(new Date(item.bookoffer[j].date), 'PP', {locale: es})}
-            offerer={item.bookoffer[j].account}
-            deliveryaddress={item.bookoffer[j].deliveryaddress}
-            image={imgLink}
-          />
-        ]);
+        setOffersData(offers => [...offers, {
+          id: item.booksaleid,
+          idOffer: item.bookoffer[j].bookofferid,
+          title: item.title,
+          author: item.author,
+          statusShow: 'PEDIDO '+item.bookoffer[j].status,
+          date: format(new Date(item.bookoffer[j].date), 'PP', {locale: es}),
+          offerer: item.bookoffer[j].account,
+          deliveryaddress: item.bookoffer[j].deliveryaddress,
+          image: imgLink,
+        }]);
       }
     }
   };
@@ -100,7 +96,20 @@ export default function UserBookOffers() {
         </View>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
           <View style={{ alignItems: 'center', gap: 20, width: '90%' }}>
-            {offers}
+            {offers.map(item =>
+              <BookOffer 
+                key={item.idOffer}
+                id={item.id}
+                idOffer={item.idOffer}
+                title={item.title}
+                author={item.author}
+                statusShow={item.statusShow}
+                date={item.date}
+                offerer={item.offerer}
+                deliveryaddress={item.deliveryaddress}
+                image={item.image}
+              />
+            )}
           </View>
         </ScrollView>
         <BottomNavBar pedidosActive={true} />
