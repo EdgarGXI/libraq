@@ -24,23 +24,12 @@ export default function UserBookSales({route, navigation}) {
     const getStoredData = async() => {
       // fetches booksale stored data and renders as BookSale components
       let storedData = await fetchBookSalesByUser(user);
+      setSalesData([]);
       for (let i = 0; i < storedData.length; i++) {
         let item = storedData[i];
         let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
-        setSalesData(sales => [...sales, 
-          <BookSale 
-            id={item.booksaleid}
-            title={item.title}
-            author={item.author}
-            editorial={item.editorial}
-            year={item.year}
-            cover={item.cover}
-            price={item.price} 
-            statusShow={'VENTA '+item.status}
-            date={format(new Date(item.date), 'PP', {locale: es})}
-            image={imgLink}
-          />
-        ]);
+        item['img'] = imgLink;
+        setSalesData(sales => [...sales, item]);
       }
     };
     getStoredData();
@@ -57,7 +46,21 @@ export default function UserBookSales({route, navigation}) {
               style={{ marginTop: 10 }} 
               onPress={() => navigation.navigate('Crear venta nueva')}
             />
-            {sales}
+            {sales.map(item =>
+              <BookSale 
+                  key={item.booksaleid}
+                  id={item.booksaleid}
+                  title={item.title}
+                  author={item.author}
+                  editorial={item.editorial}
+                  year={item.year}
+                  cover={item.cover}
+                  price={item.price} 
+                  statusShow={'VENTA '+item.status}
+                  date={format(new Date(item.date), 'PP', {locale: es})}
+                  image={item.img}
+              />
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
