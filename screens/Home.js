@@ -36,24 +36,12 @@ export default function Home() {
       for (let i = 0; i < storedData.length; i++) {
         let item = storedData[i];
         let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
-        setSalesData(sales => [...sales, 
-          <BookSale 
-            id={item.booksaleid}
-            title={item.title}
-            author={item.author}
-            editorial={item.editorial}
-            year={item.year}
-            cover={item.cover}
-            price={item.price} 
-            statusShow={'VENTA '+item.status}
-            date={format(new Date(item.date), 'PP', {locale: es})}
-            image={imgLink}
-          />
-        ]);
+        item['img'] = imgLink;
+        setSalesData(sales => [...sales, item]);
       }
     };
     getStoredData();
-  }, [user]);
+  }, [user, sales, setSalesData]);
   
   return (
     <View style={styles.view0}>
@@ -92,7 +80,21 @@ export default function Home() {
 
           <TitleText style={{ paddingBottom: 10 }}>Últimas ventas</TitleText>
           <View style={{ alignItems: 'center', gap: 30, width: '100%' }}>
-            {sales}
+            {sales.map(item =>
+              <BookSale 
+                  key={item.booksaleid}
+                  id={item.booksaleid}
+                  title={item.title}
+                  author={item.author}
+                  editorial={item.editorial}
+                  year={item.year}
+                  cover={item.cover}
+                  price={item.price} 
+                  statusShow={'VENTA '+item.status}
+                  date={format(new Date(item.date), 'PP', {locale: es})}
+                  image={item.img}
+              />
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
