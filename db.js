@@ -205,6 +205,9 @@ export async function uploadFile(bucket, path, file) {
 export async function getAvatar(userid) {
   let user = await fetchByColumn('account', 'accountid', userid);
   user = user[0];
-  let imgLink = await fetchImage('avatars', user.email);
+  let imgLink;
+  if (user !== null & user !== undefined){
+    imgLink = await fetchImage('avatars', user.email);
+  }
   return imgLink;
 }
