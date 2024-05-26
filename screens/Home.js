@@ -43,7 +43,7 @@ export default function Home() {
     };
     getStoredData();
   }, [user]);
-  
+  //console.log(sales)
   return (
     <View style={styles.view0}>
       <SafeAreaView style={{ width: '100%', flex: 1 }}>
