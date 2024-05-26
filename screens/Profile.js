@@ -59,11 +59,12 @@ export default function Profile({ route, navigation }) {
 
   // fetches stored user data and pre-fills inputs
   useEffect(() => {
+    const att = ['name', 'lastname', 'email', 'password', 'bio', 'dpt', 'city', 'postcode', 'address'];
     const getStoredData = async() => {
       let storedData = await fetchByColumn('account', 'accountid', userToken);
       storedData = storedData[0];
-      for (var item in data) {
-        handleChange(item, storedData[item]);
+      for (var i in att) {
+        handleChange(att[i], storedData[att[i]]);
       }
       let imgLink = await fetchImage('avatars', storedData.email);
       if (imgLink !== null) {
