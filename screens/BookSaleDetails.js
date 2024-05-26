@@ -44,21 +44,21 @@ export default function BookSaleDetails({ route, navigation }) {
       // set genres
       if (item.bookgenre.length > 0) {
         for (let i = 0; i < item.bookgenre.length; i++) {
-          setGenres(genresChip => [...genresChip, <Chip content={item.bookgenre[i].genre} />]);
+          setGenres(genresChip => [...genresChip, <Chip key={item.bookgenre[i].genre} content={item.bookgenre[i].genre} />]);
         }
       } else {
-        setGenres([<Chip content='Indefinido' />]);
+        setGenres([<Chip key='Indefinido' content='Indefinido' />]);
       }
       // set status
       if (item.marked || item.damaged) {
         if (item.marked) {
-          setStatus(status => [...status, <Chip content='Rayado' />]);
+          setStatus(status => [...status, <Chip content='Rayado' key='Rayado' />]);
         } 
         if (item.damaged) {
-          setStatus(status => [...status, <Chip content='Dañado' />]);
+          setStatus(status => [...status, <Chip content='Dañado' key='Dañado' />]);
         }
       } else {
-        setStatus([<Chip content='Intacto' />]);
+        setStatus([<Chip content='Intacto' key='Intacto' />]);
       }
     };
     getStoredData();
