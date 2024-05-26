@@ -33,6 +33,7 @@ export default function Home() {
       setStats(await getSellerStats(user));
       // fetches booksale stored data and renders as BookSale component
       let storedData = await fetchAll('booksale');
+      setSalesData([]);
       for (let i = 0; i < storedData.length; i++) {
         let item = storedData[i];
         let imgLink = await fetchImage('book_covers', item.booksaleid); //item.img
@@ -41,7 +42,7 @@ export default function Home() {
       }
     };
     getStoredData();
-  }, [user, sales, setSalesData]);
+  }, [user]);
   
   return (
     <View style={styles.view0}>
