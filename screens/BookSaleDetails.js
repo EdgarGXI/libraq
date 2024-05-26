@@ -44,21 +44,21 @@ export default function BookSaleDetails({ route, navigation }) {
       // set genres
       if (item.bookgenre.length > 0) {
         for (let i = 0; i < item.bookgenre.length; i++) {
-          setGenres(genresChip => [...genresChip, <Chip key={item.bookgenre[i].genre} content={item.bookgenre[i].genre} />]);
+          setGenres(genresChip => [...genresChip, item.bookgenre[i].genre]);
         }
       } else {
-        setGenres([<Chip key='Indefinido' content='Indefinido' />]);
+        setGenres(['Indefinido']);
       }
       // set status
       if (item.marked || item.damaged) {
         if (item.marked) {
-          setStatus(status => [...status, <Chip content='Rayado' key='Rayado' />]);
+          setStatus(status => [...status, 'Rayado']);
         } 
         if (item.damaged) {
-          setStatus(status => [...status, <Chip content='Dañado' key='Dañado' />]);
+          setStatus(status => [...status, 'Dañado']);
         }
       } else {
-        setStatus([<Chip content='Intacto' key='Intacto' />]);
+        setStatus(['Intacto']);
       }
     };
     getStoredData();
@@ -143,12 +143,16 @@ export default function BookSaleDetails({ route, navigation }) {
 
             <NormalText style={styles.supt}>Estado</NormalText>
             <View style={styles.chipContainer}>
-              {status}
+              {status.map(item =>
+                <Chip key={item} content={item} />
+              )}
             </View>
             
             <NormalText style={styles.supt}>Género</NormalText>
             <ScrollView horizontal style={styles.chipContainer}>
-              {genresChip}
+              {genresChip.map(item =>
+                <Chip key={item} content={item} />
+              )}
             </ScrollView>
 
             <View 
